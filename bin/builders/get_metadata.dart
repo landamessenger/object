@@ -21,11 +21,15 @@ Future<List<VariableInfo>> findVariables(String path) async {
     final vars = getVars(content);
 
     for (VariableInfo variable in vars) {
+      print('============================================');
       print('name: ${variable.name}');
       print('type: ${variable.type}');
       print('identifier: ${variable.identifier}');
       print('nullable: ${variable.nullable}');
       print('primary: ${variable.primary}');
+      print('map: ${variable.map}');
+      print('list: ${variable.list}');
+      print('primitive: ${variable.primitive}');
     }
 
     return vars;
@@ -39,6 +43,9 @@ Future<List<VariableInfo>> findVariables(String path) async {
 class VariableInfo {
   final bool primary;
   final bool nullable;
+  final bool list;
+  final bool map;
+  final bool primitive;
   final String identifier;
   final String name;
   final String type;
@@ -49,6 +56,9 @@ class VariableInfo {
     required this.identifier,
     required this.name,
     required this.type,
+    required this.list,
+    required this.map,
+    required this.primitive,
   });
 
   String typeForImplement() {
@@ -67,20 +77,23 @@ List<VariableInfo> getVars(String content) {
   ps.removeAt(0);
   for (final p in ps) {
     final code = p.split(';').firstOrNull ?? '';
-    parts.add(variableInfo(code));
+    parts.add(getVariableInfo(code));
   }
   return parts;
 }
 
-VariableInfo variableInfo(String code) {
+VariableInfo getVariableInfo(String code) {
   /**
    * (name: 'numberContent')
       num numberContent = 0
    */
 
   final primary = getPrimary(code);
-  final identifier = getIdentifier(code);
   final type = getType(code);
+  final map = isMap(type);
+  final list = isList(type);
+  final identifier = getIdentifier(code);
+  final primitive = isPrimitive(type);
   final name = getName(code, type);
 
   return VariableInfo(
@@ -89,6 +102,9 @@ VariableInfo variableInfo(String code) {
     primary: primary,
     name: name,
     type: type,
+    map: map,
+    list: list,
+    primitive: primitive,
   );
 }
 
@@ -106,9 +122,36 @@ bool getPrimary(String code) {
 }
 
 String getType(String code) {
-  print('code: $code');
   final p = code.split(')')[1].trim();
+  if (code.contains('Map<')) {
+    return ('${p.split('> ').first}>').trim();
+  }
   return p.split(' ').first.trim();
+}
+
+bool isMap(String type) {
+  return type.contains('Map<');
+}
+
+bool isList(String type) {
+  return type.contains('List<');
+}
+
+bool isPrimitive(String type) {
+  if (isMap(type)) {
+    final clean = type.split(',')[1].split('>').first;
+    return isPrimitiveType(clean);
+  } else if (isList(type)) {
+    final clean = type.split('<')[1].split('>').first;
+    return isPrimitiveType(clean);
+  }
+  return isPrimitiveType(type);
+}
+
+bool isPrimitiveType(String type) {
+  final clean = type.replaceAll('?', '').trim();
+  final primitives = ['num', 'int', 'double', 'String', 'bool'];
+  return primitives.contains(clean);
 }
 
 String getName(String code, String type) {

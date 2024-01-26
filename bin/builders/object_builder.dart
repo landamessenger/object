@@ -61,7 +61,19 @@ String getVariablesFromJson(List<VariableInfo> variables) {
   String declarations = '\n';
 
   for (VariableInfo variableInfo in variables) {
-    if (variableInfo.nullable) {
+    if (variableInfo.map) {
+      String variable =
+          '${variableInfo.name} = getMapOfInstances(json, \'${variableInfo.identifier}\');\n';
+      declarations += variable;
+    } else if (variableInfo.list) {
+      String variable =
+          '${variableInfo.name} = getListOfInstances(json, \'${variableInfo.identifier}\');\n';
+      declarations += variable;
+    } else if (!variableInfo.primitive) {
+      String variable =
+          '${variableInfo.name} = getInstanceOf(json, \'${variableInfo.identifier}\');\n';
+      declarations += variable;
+    } else if (variableInfo.nullable) {
       String variable =
           '${variableInfo.name} = get${variableInfo.typeForImplement()}Field(json, \'${variableInfo.identifier}\');\n';
       declarations += variable;
