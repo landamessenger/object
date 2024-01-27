@@ -20,7 +20,8 @@ dev_dependencies:
   flutter_lints: ^3.0.1
 
 object:
-  outputFolder: 'lib/model/generated'
+  baseProjectFolder: 'lib'
+  outputFolder: 'model/generated'
   modelsFile: 'model.g.dart'
   generationClassSuffix: 'Gen'
 

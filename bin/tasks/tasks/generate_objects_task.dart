@@ -13,15 +13,17 @@ class GenerateObjectTask extends BaseTask {
     var appId = loadId();
     var config = loadConfigFile();
 
+    final baseProjectFolder = config['baseProjectFolder'] ?? baseProject;
+    final dir = Directory('./$baseProjectFolder');
+    await dir.create(recursive: true);
+
     final generationClassSuffix = config['generationClassSuffix'] ?? 'Gen';
 
-    final outputFolder = config['outputFolder'] ?? baseProject;
+    final outputFolder =
+        baseProjectFolder + '/' + (config['outputFolder'] ?? '');
 
     final outputFolderDir = Directory('./$outputFolder');
     await outputFolderDir.create(recursive: true);
-
-    final dir = Directory('./$baseProject');
-    await dir.create(recursive: true);
 
     final modelsFile = config['modelsFile'] ?? 'model.g.dart';
 
@@ -58,7 +60,7 @@ export 'package:object/object.dart';\n
     for (FileSystemEntity fileSystemEntity in files) {
       final File file = File(fileSystemEntity.path);
 
-      var p = file.path.split(baseProject)[1];
+      var p = file.path.split(baseProjectFolder)[1];
       var classImport = 'package:$appId$p';
 
       print(classImport);
@@ -73,6 +75,13 @@ export 'package:object/object.dart';\n
       imports += '''
 import '$classImport';
 ''';
+      for (final variables in variables) {
+        if (variables.additionalImport.isNotEmpty) {
+          imports += '''
+import '${variables.additionalImport}';
+''';
+        }
+      }
       mainGeneratedContent +=
           getObjectClassFor(className, generationClassSuffix, variables);
     }

@@ -2,9 +2,9 @@ import 'package:object/object.dart';
 
 export 'package:object/object.dart';
 
-import 'package:example/model/annotation_simple_sample.dart';
-import 'package:example/model/annotation_complex_sample.dart';
-import 'package:example/model/simple_sample.dart';
+import '../annotation_simple_sample.dart';
+import '../annotation_complex_sample.dart';
+import '../simple_sample.dart';
 
 abstract class AnnotationSimpleSampleGen
     extends Object<AnnotationSimpleSample> {

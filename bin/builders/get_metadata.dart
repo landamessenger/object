@@ -24,12 +24,14 @@ Future<List<VariableInfo>> findVariables(String path) async {
       print('============================================');
       print('name: ${variable.name}');
       print('type: ${variable.type}');
+      print('internalType: ${variable.internalType}');
+      print('primitive: ${variable.primitive}');
       print('identifier: ${variable.identifier}');
+      print('additionalImport: ${variable.additionalImport}');
       print('nullable: ${variable.nullable}');
       print('primary: ${variable.primary}');
       print('map: ${variable.map}');
       print('list: ${variable.list}');
-      print('primitive: ${variable.primitive}');
     }
 
     return vars;
@@ -46,23 +48,29 @@ class VariableInfo {
   final bool list;
   final bool map;
   final bool primitive;
+  final String additionalImport;
   final String identifier;
   final String name;
   final String type;
+  final String internalType;
 
   VariableInfo({
     required this.primary,
     required this.nullable,
     required this.identifier,
+    required this.additionalImport,
     required this.name,
     required this.type,
+    required this.internalType,
     required this.list,
     required this.map,
     required this.primitive,
   });
 
   String typeForImplement() {
-    final cleanType = type.contains('?') ? type.replaceAll('?', '') : type;
+    final cleanType = internalType.contains('?')
+        ? internalType.replaceAll('?', '')
+        : internalType;
     return cleanType.capitalize();
   }
 }
@@ -89,11 +97,13 @@ VariableInfo getVariableInfo(String code) {
    */
 
   final primary = getPrimary(code);
+  final additionalImport = getAdditionalImport(code);
   final type = getType(code);
+  final internalType = getInternalType(type);
   final map = isMap(type);
   final list = isList(type);
   final identifier = getIdentifier(code);
-  final primitive = isPrimitive(type);
+  final primitive = isPrimitiveType(internalType);
   final name = getName(code, type);
 
   return VariableInfo(
@@ -105,6 +115,8 @@ VariableInfo getVariableInfo(String code) {
     map: map,
     list: list,
     primitive: primitive,
+    internalType: internalType,
+    additionalImport: additionalImport,
   );
 }
 
@@ -119,6 +131,14 @@ bool getPrimary(String code) {
   }
   final p = code.split('primary: ')[1];
   return p.split(')').first.replaceAll(',', '').trim() == 'true';
+}
+
+String getAdditionalImport(String code) {
+  if (!code.contains('import: \'')) {
+    return '';
+  }
+  final p = code.split('import: \'')[1];
+  return p.split('\'').first;
 }
 
 String getType(String code) {
@@ -137,15 +157,13 @@ bool isList(String type) {
   return type.contains('List<');
 }
 
-bool isPrimitive(String type) {
+String getInternalType(String type) {
   if (isMap(type)) {
-    final clean = type.split(',')[1].split('>').first;
-    return isPrimitiveType(clean);
+    return type.split(',')[1].split('>').first.trim();
   } else if (isList(type)) {
-    final clean = type.split('<')[1].split('>').first;
-    return isPrimitiveType(clean);
+    return type.split('<')[1].split('>').first.trim();
   }
-  return isPrimitiveType(type);
+  return type.trim();
 }
 
 bool isPrimitiveType(String type) {

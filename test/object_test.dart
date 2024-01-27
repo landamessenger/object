@@ -8,8 +8,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:object/object.dart';
 
-import '../example/lib/model/complex_sample.dart';
-import '../example/lib/model/simple_sample.dart';
+import 'model/complex_sample.dart';
+import 'model/simple_sample.dart';
 
 void main() {
   group('Test simple serializer', () {
@@ -22,22 +22,26 @@ void main() {
       const number = 123;
       const integer = 123;
       const double = 123.0;
-      const string = 'id';
+      const string = 'string_content';
 
       /// WHEN
       sample.fromJson({
+        'id': 'id',
         'numberContent': number,
         'integerContent': integer,
         'doubleContent': double,
         'stringContent': string,
+        'booleanContent': true,
       });
 
       /// THEN
       expect(sample.toJson(), {
+        'id': 'id',
         'numberContent': 123,
         'integerContent': 123,
         'doubleContent': 123.0,
-        'stringContent': 'id'
+        'stringContent': string,
+        'booleanContent': true
       });
     });
 
@@ -55,18 +59,22 @@ void main() {
 
       /// WHEN
       sample.fromJson({
+        'id': 'id',
         'numberContent': number,
         'integerContent': integer,
         'doubleContent': double,
         'stringContent': string,
+        'booleanContent': string,
       });
 
       /// THEN
       expect(sample.toJson(), {
+        'id': 'id',
         'numberContent': 0,
         'integerContent': 0,
         'doubleContent': 0,
-        'stringContent': ''
+        'stringContent': '',
+        'booleanContent': false
       });
     });
   });
@@ -85,14 +93,17 @@ void main() {
 
       const number = 123;
       const integer = 123;
+      const boolean = true;
       const double = 123.0;
-      const string = 'id';
+      const string = 'string_content';
 
       var item = {
+        'id': 'id',
         'numberContent': number,
         'integerContent': integer,
         'doubleContent': double,
         'stringContent': string,
+        'booleanContent': boolean,
       };
 
       /// WHEN
@@ -107,25 +118,31 @@ void main() {
       /// THEN
       expect(sample.toJson(), {
         'sample': {
+          'id': 'id',
           'numberContent': number,
           'integerContent': integer,
           'doubleContent': double,
           'stringContent': string,
+          'booleanContent': boolean,
         },
         'list': [
           {
+            'id': 'id',
             'numberContent': number,
             'integerContent': integer,
             'doubleContent': double,
             'stringContent': string,
+            'booleanContent': boolean,
           }
         ],
         'map': {
           'sample': {
+            'id': 'id',
             'numberContent': number,
             'integerContent': integer,
             'doubleContent': double,
             'stringContent': string,
+            'booleanContent': boolean,
           },
         },
       });

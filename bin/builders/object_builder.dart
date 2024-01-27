@@ -50,8 +50,15 @@ String getVariablesToJson(List<VariableInfo> variables) {
   String declarations = '\n';
 
   for (VariableInfo variableInfo in variables) {
-    String variable = '\'${variableInfo.identifier}\': ${variableInfo.name},\n';
-    declarations += variable;
+    if (!variableInfo.primitive) {
+      String variable =
+          '\'${variableInfo.identifier}\': ${variableInfo.name}${variableInfo.nullable ? '?' : ''}.toJson(),\n';
+      declarations += variable;
+    } else {
+      String variable =
+          '\'${variableInfo.identifier}\': ${variableInfo.name},\n';
+      declarations += variable;
+    }
   }
 
   return declarations;
@@ -62,13 +69,25 @@ String getVariablesFromJson(List<VariableInfo> variables) {
 
   for (VariableInfo variableInfo in variables) {
     if (variableInfo.map) {
-      String variable =
-          '${variableInfo.name} = getMapOfInstances(json, \'${variableInfo.identifier}\');\n';
-      declarations += variable;
+      if (variableInfo.primitive) {
+        String variable =
+            '${variableInfo.name} = getMapOf${variableInfo.typeForImplement()}(json, \'${variableInfo.identifier}\');\n';
+        declarations += variable;
+      } else {
+        String variable =
+            '${variableInfo.name} = getMapOfInstances(json, \'${variableInfo.identifier}\');\n';
+        declarations += variable;
+      }
     } else if (variableInfo.list) {
-      String variable =
-          '${variableInfo.name} = getListOfInstances(json, \'${variableInfo.identifier}\');\n';
-      declarations += variable;
+      if (variableInfo.primitive) {
+        String variable =
+            '${variableInfo.name} = getListOf${variableInfo.typeForImplement()}(json, \'${variableInfo.identifier}\');\n';
+        declarations += variable;
+      } else {
+        String variable =
+            '${variableInfo.name} = getListOfInstances(json, \'${variableInfo.identifier}\');\n';
+        declarations += variable;
+      }
     } else if (!variableInfo.primitive) {
       String variable =
           '${variableInfo.name} = getInstanceOf(json, \'${variableInfo.identifier}\');\n';

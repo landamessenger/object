@@ -23,12 +23,12 @@ class AnnotationComplexSample extends AnnotationComplexSampleGen {
   double doubleContent = 0.0;
 
   @override
-  @Field(name: 'stringContent')
-  String stringContent = 'string_content';
-
-  @override
   @Field(name: 'booleanContent')
   bool booleanContent = true;
+
+  @override
+  @Field(name: 'stringContent')
+  String stringContent = 'string_content';
 
   @override
   @Field(

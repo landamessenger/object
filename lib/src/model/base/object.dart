@@ -176,6 +176,96 @@ abstract class Object<T> {
     }
   }
 
+  List<String> getListOfString(
+    Map<String, dynamic>? data,
+    String key,
+  ) {
+    try {
+      if (data == null) return [];
+      if (!data.containsKey(key)) return [];
+
+      return ObjectManager().listObjectFromBasicType<String>(
+        data[key] ?? [],
+      );
+    } catch (e) {
+      printDebug('Error on getListOfString $runtimeType');
+      printDebug(e);
+      return [];
+    }
+  }
+
+  List<num> getListOfNum(
+    Map<String, dynamic>? data,
+    String key,
+  ) {
+    try {
+      if (data == null) return [];
+      if (!data.containsKey(key)) return [];
+
+      return ObjectManager().listObjectFromBasicType<num>(
+        data[key] ?? [],
+      );
+    } catch (e) {
+      printDebug('Error on getListOfNum $runtimeType');
+      printDebug(e);
+      return [];
+    }
+  }
+
+  List<double> getListOfDouble(
+    Map<String, dynamic>? data,
+    String key,
+  ) {
+    try {
+      if (data == null) return [];
+      if (!data.containsKey(key)) return [];
+
+      return ObjectManager().listObjectFromBasicType<double>(
+        data[key] ?? [],
+      );
+    } catch (e) {
+      printDebug('Error on getListOfDouble $runtimeType');
+      printDebug(e);
+      return [];
+    }
+  }
+
+  List<int> getListOfInt(
+    Map<String, dynamic>? data,
+    String key,
+  ) {
+    try {
+      if (data == null) return [];
+      if (!data.containsKey(key)) return [];
+
+      return ObjectManager().listObjectFromBasicType<int>(
+        data[key] ?? [],
+      );
+    } catch (e) {
+      printDebug('Error on getListOfInt $runtimeType');
+      printDebug(e);
+      return [];
+    }
+  }
+
+  List<bool> getListOfBool(
+    Map<String, dynamic>? data,
+    String key,
+  ) {
+    try {
+      if (data == null) return [];
+      if (!data.containsKey(key)) return [];
+
+      return ObjectManager().listObjectFromBasicType<bool>(
+        data[key] ?? [],
+      );
+    } catch (e) {
+      printDebug('Error on getListOfBool $runtimeType');
+      printDebug(e);
+      return [];
+    }
+  }
+
   Map<String, R> getMapOfInstances<R extends Object<R>>(
     Map<String, dynamic>? data,
     String key,
@@ -195,7 +285,7 @@ abstract class Object<T> {
     }
   }
 
-  Map<String, String> getMapOfStrings(Map<String, dynamic>? data, String key) {
+  Map<String, String> getMapOfString(Map<String, dynamic>? data, String key) {
     try {
       if (data == null) return {};
       if (!data.containsKey(key)) return {};
@@ -234,7 +324,37 @@ abstract class Object<T> {
         data[key] ?? {},
       );
     } catch (e) {
-      printDebug('Error on getMapOfNum $runtimeType');
+      printDebug('Error on getMapOfInt $runtimeType');
+      printDebug(e);
+      return {};
+    }
+  }
+
+  Map<String, double> getMapOfDouble(Map<String, dynamic>? data, String key) {
+    try {
+      if (data == null) return {};
+      if (!data.containsKey(key)) return {};
+
+      return ObjectManager().fromBasicMap<double>(
+        data[key] ?? {},
+      );
+    } catch (e) {
+      printDebug('Error on getMapOfDouble $runtimeType');
+      printDebug(e);
+      return {};
+    }
+  }
+
+  Map<String, bool> getMapOfBool(Map<String, dynamic>? data, String key) {
+    try {
+      if (data == null) return {};
+      if (!data.containsKey(key)) return {};
+
+      return ObjectManager().fromBasicMap<bool>(
+        data[key] ?? {},
+      );
+    } catch (e) {
+      printDebug('Error on getMapOfBool $runtimeType');
       printDebug(e);
       return {};
     }
@@ -256,7 +376,7 @@ abstract class Object<T> {
     }
   }
 
-  bool getRequiredBooleanField(Map<String, dynamic>? data, String key,
+  bool getRequiredBoolField(Map<String, dynamic>? data, String key,
       {bool defaultValue = false}) {
     try {
       bool? value = getBooleanField(data, key);
