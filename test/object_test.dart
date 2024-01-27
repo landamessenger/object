@@ -84,7 +84,7 @@ void main() {
         'GIVEN valid serialization values WHEN serializing THEN the same content is produced',
         () {
       /// GIVEN
-      ObjectLib().addInstances(
+      ObjectLib().addClasses(
         [
           SimpleSample(),
         ],

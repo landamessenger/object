@@ -87,7 +87,7 @@ void main() {
         'GIVEN valid serialization values WHEN serializing THEN the same content is produced',
         () {
       /// GIVEN
-      ObjectLib().addInstances(
+      ObjectLib().addClasses(
         [
           AnnotationSimpleSample(),
           SimpleSample(),
@@ -188,7 +188,7 @@ void main() {
         'GIVEN not valid serialization values WHEN serializing THEN not the same content is produced, but does not crash',
         () {
       /// GIVEN
-      ObjectLib().addInstances(
+      ObjectLib().addClasses(
         [
           AnnotationSimpleSample(),
           SimpleSample(),

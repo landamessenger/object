@@ -13,7 +13,7 @@ class ObjectLib {
 
   ObjectManager get objectManager => ObjectManager();
 
-  void addInstances(List<dynamic> instances) =>
+  void addClasses(List<dynamic> instances) =>
       objectManager.instances.addAll(instances);
 
   Map<String, T> fromBasicMap<T>(Map<dynamic, dynamic> map) =>

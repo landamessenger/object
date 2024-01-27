@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:object/object.dart';
+
+import 'model/annotation_complex_sample.dart';
+import 'model/annotation_simple_sample.dart';
+import 'model/complex_sample.dart';
+import 'model/simple_sample.dart';
 
 void main() {
+  ObjectLib().addClasses([
+    AnnotationComplexSample(),
+    AnnotationSimpleSample(),
+    ComplexSample(),
+    SimpleSample(),
+  ]);
   runApp(const MyApp());
 }
 

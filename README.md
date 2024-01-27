@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/landamessenger/object.svg?branch=master)](https://travis-ci.org/landamessenger/object)
 [![Coverage Status](https://coveralls.io/repos/github/landamessenger/object/badge.svg?branch=master)](https://coveralls.io/github/landamessenger/object?branch=master)
 
-The Object library provides utilities for serializing and deserializing Dart objects to and from JSON format. This library simplifies the process of converting Dart objects to JSON and vice versa, making it easier to work with JSON data in Dart applications.
+The `object` library provides utilities for serializing and deserializing Dart objects to and from JSON format. This library simplifies the process of converting Dart objects to JSON and vice versa, making it easier to work with JSON data in Dart applications.
 
 ## Features
 
@@ -34,7 +34,7 @@ Then, run `flutter pub get` to install the library.
 
 ### 1. Define Dart Classes
 
-Define Dart classes that you want to serialize or deserialize. Annotate these classes with the necessary annotations from the `json_serializable` package to specify serialization behavior.
+Define Dart classes that you want to serialize or deserialize. Annotate these classes with the necessary annotations from the generated file from the `object` package to specify serialization behavior.
 
 > `sample.dart` in `model/` folder
 
@@ -83,7 +83,25 @@ dart run object:build
 
 This command generates serialization code based on the annotations in your Dart files.
 
-### 3. Serialize and Deserialize Objects
+### 3. Configure the classes
+
+Configure the classes you will use with the `object` library.
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:object/object.dart';
+
+import 'model/sample.dart';
+
+void main() {
+  ObjectLib().addClasses([
+    Sample(),
+  ]);
+  runApp(const MyApp());
+}
+```
+
+### 4. Serialize and Deserialize Objects
 
 Use the generated `toJson()` and `fromJson()` methods to serialize and deserialize objects to and from JSON format.
 
