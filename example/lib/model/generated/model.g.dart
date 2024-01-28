@@ -129,4 +129,8 @@ abstract class AnnotationComplexSampleGen
 
   @override
   String getId() => id;
+
+  void onLoad() {
+    // nothing to do here
+  }
 }

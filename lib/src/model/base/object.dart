@@ -138,13 +138,14 @@ abstract class Object<T> {
 
   R? getInstanceOf<R extends Object<R>>(
     Map<String, dynamic>? data,
-    String key,
-  ) {
+    String key, {
+    R? recyclerInstance,
+  }) {
     try {
       if (data == null) return null;
       if (!data.containsKey(key)) return null;
 
-      final instance = ObjectManager().instance<R>(R, null);
+      final instance = recyclerInstance ?? ObjectManager().instance<R>(R, null);
       return instance.fromJson(
         ObjectManager().internalLinkerToMap(
           data[key],

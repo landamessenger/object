@@ -6,7 +6,7 @@ Future<String?> findClassName(String path) async {
   try {
     File file = File(path);
     final content = await file.readAsString();
-    return '${content.split("class ")[1].split(" ").first.trim()}';
+    return content.split("class ")[1].split(" ").first.trim();
   } catch (e) {
     print(e);
     return null;
@@ -23,6 +23,7 @@ Future<List<VariableInfo>> findVariables(String path) async {
     for (VariableInfo variable in vars) {
       // print('============================================');
       print('- ${variable.name}');
+
       /*
       print('type: ${variable.type}');
       print('internalType: ${variable.internalType}');
@@ -31,8 +32,10 @@ Future<List<VariableInfo>> findVariables(String path) async {
       print('additionalImport: ${variable.additionalImport}');
       print('nullable: ${variable.nullable}');
       print('primary: ${variable.primary}');
+      print('defaultValue: ${variable.defaultValue}');
       print('map: ${variable.map}');
-      print('list: ${variable.list}');*/
+      print('list: ${variable.list}');
+       */
     }
 
     return vars;
@@ -44,19 +47,28 @@ Future<List<VariableInfo>> findVariables(String path) async {
 }
 
 class VariableInfo {
+  final bool basic;
   final bool primary;
   final bool nullable;
   final bool list;
   final bool map;
   final bool primitive;
+  final bool recycle;
+  final bool date;
+  final bool dynamic;
   final String additionalImport;
   final String identifier;
   final String name;
   final String type;
   final String internalType;
+  final String defaultValue;
 
   VariableInfo({
+    required this.basic,
     required this.primary,
+    required this.recycle,
+    required this.dynamic,
+    required this.date,
     required this.nullable,
     required this.identifier,
     required this.additionalImport,
@@ -66,6 +78,7 @@ class VariableInfo {
     required this.list,
     required this.map,
     required this.primitive,
+    required this.defaultValue,
   });
 
   String typeForImplement() {
@@ -97,10 +110,15 @@ VariableInfo getVariableInfo(String code) {
       num numberContent = 0
    */
 
+  final defaultValue = getDefault(code);
   final primary = getPrimary(code);
+  final recycle = getRecycle(code);
+  final basic = getBasic(code);
   final additionalImport = getAdditionalImport(code);
   final type = getType(code);
   final internalType = getInternalType(type);
+  final isDate = isDateTime(internalType);
+  final dynamic = isDynamic(internalType);
   final map = isMap(type);
   final list = isList(type);
   final identifier = getIdentifier(code);
@@ -110,14 +128,19 @@ VariableInfo getVariableInfo(String code) {
   return VariableInfo(
     nullable: type.endsWith('?'),
     identifier: identifier,
+    recycle: recycle,
     primary: primary,
+    basic: basic,
     name: name,
     type: type,
     map: map,
     list: list,
     primitive: primitive,
+    date: isDate,
+    dynamic: dynamic,
     internalType: internalType,
     additionalImport: additionalImport,
+    defaultValue: defaultValue,
   );
 }
 
@@ -126,12 +149,42 @@ String getIdentifier(String code) {
   return p.split('\'').first.trim();
 }
 
+String getDefault(String code) {
+  if (!code.contains('defaultValue:')) {
+    return '';
+  }
+
+  final p = code.split('defaultValue:')[1].trim();
+  final p2 = p.split('value:')[1].trim();
+  var p3 = p2.split(')').first.trim();
+  if (p3.trim().endsWith(',')) {
+    p3 = p3.trim().substring(0, p3.length - 1);
+  }
+  return p3.trim();
+}
+
 bool getPrimary(String code) {
   if (!code.contains('primary:')) {
     return false;
   }
-  final p = code.split('primary: ')[1];
-  return p.split(')').first.replaceAll(',', '').trim() == 'true';
+  final p = code.split('primary:')[1].trim();
+  return p.startsWith('true');
+}
+
+bool getBasic(String code) {
+  if (!code.contains('basic:')) {
+    return false;
+  }
+  final p = code.split('basic:')[1].trim();
+  return p.startsWith('true');
+}
+
+bool getRecycle(String code) {
+  if (!code.contains('recycle:')) {
+    return false;
+  }
+  final p = code.split('recycle:')[1].trim();
+  return p.startsWith('true');
 }
 
 String getAdditionalImport(String code) {
@@ -143,7 +196,7 @@ String getAdditionalImport(String code) {
 }
 
 String getType(String code) {
-  final p = code.split(')')[1].trim();
+  final p = code.split(')').last.trim();
   if (code.contains('Map<')) {
     return ('${p.split('> ').first}>').trim();
   }
@@ -165,6 +218,16 @@ String getInternalType(String type) {
     return type.split('<')[1].split('>').first.trim();
   }
   return type.trim();
+}
+
+bool isDateTime(String type) {
+  final clean = type.replaceAll('?', '').trim();
+  return clean == 'DateTime';
+}
+
+bool isDynamic(String type) {
+  final clean = type.replaceAll('?', '').trim();
+  return clean == 'dynamic';
 }
 
 bool isPrimitiveType(String type) {

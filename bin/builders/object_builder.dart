@@ -22,6 +22,9 @@ abstract class $clazz$clazzSuffix extends Object<$clazz> {
   @override
   $clazz fromJson(Map<String, dynamic> json) {
     $variablesFromJson
+    
+    onLoad();
+    
     return this as $clazz;
   }
 
@@ -29,6 +32,10 @@ abstract class $clazz$clazzSuffix extends Object<$clazz> {
   $clazz instance() => $clazz();
   
   ${primaryGetter ?? ''}
+  
+  void onLoad() {
+    // nothing to do here
+  }
 }
   ''';
 
@@ -50,10 +57,20 @@ String getVariablesToJson(List<VariableInfo> variables) {
   String declarations = '\n';
 
   for (VariableInfo variableInfo in variables) {
-    if (!variableInfo.primitive) {
+    if (variableInfo.basic || variableInfo.dynamic) {
       String variable =
-          '\'${variableInfo.identifier}\': ${variableInfo.name}${variableInfo.nullable ? '?' : ''}.toJson(),\n';
+          '\'${variableInfo.identifier}\': ${variableInfo.name},\n';
       declarations += variable;
+    } else if (!variableInfo.primitive) {
+      if (variableInfo.date) {
+        String variable =
+            '\'${variableInfo.identifier}\': ${variableInfo.name}${variableInfo.nullable ? '?' : ''}.toString(),\n';
+        declarations += variable;
+      } else {
+        String variable =
+            '\'${variableInfo.identifier}\': ${variableInfo.name}${variableInfo.nullable ? '?' : ''}.toJson(),\n';
+        declarations += variable;
+      }
     } else {
       String variable =
           '\'${variableInfo.identifier}\': ${variableInfo.name},\n';
@@ -68,7 +85,11 @@ String getVariablesFromJson(List<VariableInfo> variables) {
   String declarations = '\n';
 
   for (VariableInfo variableInfo in variables) {
-    if (variableInfo.map) {
+    if (variableInfo.basic) {
+      String variable =
+          '${variableInfo.name} = json[\'${variableInfo.identifier}\'];\n';
+      declarations += variable;
+    } else if (variableInfo.map) {
       if (variableInfo.primitive) {
         String variable =
             '${variableInfo.name} = getMapOf${variableInfo.typeForImplement()}(json, \'${variableInfo.identifier}\');\n';
@@ -88,17 +109,31 @@ String getVariablesFromJson(List<VariableInfo> variables) {
             '${variableInfo.name} = getListOfInstances(json, \'${variableInfo.identifier}\');\n';
         declarations += variable;
       }
-    } else if (!variableInfo.primitive) {
+    } else if (variableInfo.date) {
       String variable =
-          '${variableInfo.name} = getInstanceOf(json, \'${variableInfo.identifier}\');\n';
+          '${variableInfo.name} = getDatetime(json, \'${variableInfo.identifier}\');\n';
       declarations += variable;
+    } else if (variableInfo.dynamic) {
+      String variable =
+          '${variableInfo.name} = getRequiredDynamic(json, \'${variableInfo.identifier}\');\n';
+      declarations += variable;
+    } else if (!variableInfo.primitive) {
+      if (variableInfo.nullable) {
+        String variable =
+            '${variableInfo.name} = getInstanceOf(json, \'${variableInfo.identifier}\' ${variableInfo.recycle ? ', recyclerInstance: ${variableInfo.name}' : ''});\n';
+        declarations += variable;
+      } else {
+        String variable =
+            '${variableInfo.name} = getRequiredInstanceOf(json, \'${variableInfo.identifier}\' ${variableInfo.recycle ? ', recyclerInstance: ${variableInfo.name}' : ''});\n';
+        declarations += variable;
+      }
     } else if (variableInfo.nullable) {
       String variable =
           '${variableInfo.name} = get${variableInfo.typeForImplement()}Field(json, \'${variableInfo.identifier}\');\n';
       declarations += variable;
     } else {
       String variable =
-          '${variableInfo.name} = getRequired${variableInfo.typeForImplement()}Field(json, \'${variableInfo.identifier}\');\n';
+          '${variableInfo.name} = getRequired${variableInfo.typeForImplement()}Field(json, \'${variableInfo.identifier}\'${variableInfo.defaultValue.isNotEmpty ? ', defaultValue: ${variableInfo.defaultValue}' : ''});\n';
       declarations += variable;
     }
   }

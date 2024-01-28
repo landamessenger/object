@@ -1,16 +1,16 @@
 name: object
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+homepage: https://landamessenger.com
 
 environment:
-  sdk: '>=3.2.5 <4.0.0'
+  sdk: '>=3.2.4 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  analyzer: ^2.7.1                              # android   ios   linux   macos   web   windows
+  analyzer: ^6.2.0                              # android   ios   linux   macos   web   windows
   cloud_firestore: ^4.14.0                      # android   ios           macos   web
   intl: ^0.18.1                                 # android   ios   linux   macos   web   windows
   yaml: ^3.1.2                                  # android   ios   linux   macos   web   windows
