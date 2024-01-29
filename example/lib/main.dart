@@ -7,7 +7,7 @@ import 'model/complex_sample.dart';
 import 'model/simple_sample.dart';
 
 void main() {
-  ObjectLib().addClasses([
+  ObjectLib().prepareInstances([
     AnnotationComplexSample(),
     AnnotationSimpleSample(),
     ComplexSample(),
