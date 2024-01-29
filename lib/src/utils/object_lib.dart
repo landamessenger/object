@@ -44,6 +44,9 @@ class ObjectLib {
         id,
       );
 
+  Map<String, dynamic> internalLinkerToMap(map) =>
+      objectManager.internalLinkerToMap(map);
+
   T instance<T extends Object<T>>(Type t, dynamic id) =>
       objectManager.instance<T>(
         t,

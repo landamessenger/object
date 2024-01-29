@@ -361,6 +361,21 @@ abstract class Object<T> {
     }
   }
 
+  Map<String, dynamic> getMapOfDynamic(Map<String, dynamic>? data, String key) {
+    try {
+      if (data == null) return {};
+      if (!data.containsKey(key)) return {};
+
+      return ObjectManager().fromBasicMap<dynamic>(
+        data[key] ?? {},
+      );
+    } catch (e) {
+      printDebug('Error on getMapOfDynamic $runtimeType');
+      printDebug(e);
+      return {};
+    }
+  }
+
   /// Required getters
   String getRequiredStringField(
     Map<String, dynamic>? data,
@@ -505,4 +520,10 @@ abstract class Object<T> {
       return defaultValue();
     }
   }
+
+  String toReadableJson() {
+    return jsonEncode(this.toJson());
+  }
+
+
 }

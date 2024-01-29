@@ -31,7 +31,7 @@ abstract class $clazz$clazzSuffix extends Object<$clazz> {
   @override
   $clazz instance() => $clazz();
   
-  ${primaryGetter ?? ''}
+  $primaryGetter
   
   void onLoad() {
     // nothing to do here
@@ -90,7 +90,7 @@ String getVariablesFromJson(List<VariableInfo> variables) {
           '${variableInfo.name} = json[\'${variableInfo.identifier}\'];\n';
       declarations += variable;
     } else if (variableInfo.map) {
-      if (variableInfo.primitive) {
+      if (variableInfo.primitive || variableInfo.dynamic) {
         String variable =
             '${variableInfo.name} = getMapOf${variableInfo.typeForImplement()}(json, \'${variableInfo.identifier}\');\n';
         declarations += variable;
@@ -141,7 +141,7 @@ String getVariablesFromJson(List<VariableInfo> variables) {
   return declarations;
 }
 
-String? getPrimaryDeclaration(List<VariableInfo> variables) {
+String getPrimaryDeclaration(List<VariableInfo> variables) {
   for (VariableInfo variableInfo in variables) {
     if (variableInfo.primary) {
       return '''
@@ -151,5 +151,10 @@ String? getPrimaryDeclaration(List<VariableInfo> variables) {
     }
   }
 
-  return null;
+  return '''
+  @override
+  String getId() {
+    return '';
+  }
+''';
 }
