@@ -2,21 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:object/src/utils/print.dart';
 
-extension DateData on String {
-  DateTime? dateFrom(
-    dynamic json, {
+extension DateData<T extends Object> on T? {
+  DateTime? dateFrom({
     String format = 'yyyy-MM-dd HH:mm:sss',
     String locale = 'en_US',
   }) {
     try {
       DateTime? date;
-      if (json[this] == 'null') {
+      if (this == 'null') {
         date = null;
-      } else if (json[this] is String) {
-        if (isMillis(json[this], format)) {
+      } else if (this is String) {
+        if (isMillis(this as String, format)) {
           date = Timestamp.fromMillisecondsSinceEpoch(
             int.parse(
-              json[this],
+              this as String,
             ),
           ).toDate();
         } else {
@@ -24,14 +23,15 @@ extension DateData on String {
             format,
             locale,
           );
-          date = df.parse(json[this]);
+          date = df.parse(this as String);
         }
-      } else if (json[this] != null && json[this] is Timestamp) {
-        date = (json[this] as Timestamp).toDate();
-      } else if (json[this] != null && json[this] is DateTime) {
-        date = json[this];
-      } else if (json[this] != null && json[this]['_seconds'] != null) {
-        date = Timestamp(json[this]['_seconds'], json[this]['_nanoseconds'])
+      } else if (this != null && this is Timestamp) {
+        date = (this as Timestamp).toDate();
+      } else if (this != null && this is DateTime) {
+        date = this as DateTime;
+      } else if (this != null && (this as dynamic)['_seconds'] != null) {
+        date = Timestamp((this as dynamic)['_seconds'],
+                (this as dynamic)['_nanoseconds'])
             .toDate();
       }
       return date;

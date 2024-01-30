@@ -1,31 +1,15 @@
 import 'package:object/src/manager/manager.dart';
-import 'package:object/src/model/base/object.dart';
+import 'package:object/src/model/base/object.dart' as object;
 import 'package:object/src/utils/date_ext.dart';
 import 'package:object/src/utils/print.dart';
 
-extension DataExt on Map<String, dynamic>? {
-  dynamic getField(String key) {
-    try {
-      final data = this;
-      if (data == null) {
-        return null;
-      }
-      final map = ObjectManager().normalizeMap(data);
-      return map[key];
-    } catch (e) {
-      printDebug('Error on getField $runtimeType');
-      printDebug(e);
-      return null;
-    }
-  }
-
+extension DataExt<T extends Object> on T? {
   /// Nullable getters
-  String? getStringField(String key) {
+  String? getStringField() {
     try {
-      final data = this;
-      dynamic value = data.getField(key);
-      if (value is String) {
-        return value;
+      final data = this as dynamic;
+      if (data is String) {
+        return data;
       }
       return null;
     } catch (e) {
@@ -35,12 +19,11 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  bool? getBooleanField(String key) {
+  bool? getBooleanField() {
     try {
-      final data = this;
-      dynamic value = data.getField(key);
-      if (value is bool) {
-        return value;
+      final data = this as dynamic;
+      if (data is bool) {
+        return data;
       }
       return null;
     } catch (e) {
@@ -50,12 +33,11 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  num? getNumField(String key) {
+  num? getNumField() {
     try {
-      final data = this;
-      dynamic value = data.getField(key);
-      if (value is num) {
-        return value;
+      final data = this as dynamic;
+      if (data is num) {
+        return data;
       }
       return null;
     } catch (e) {
@@ -65,16 +47,15 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  int? getIntField(String key) {
+  int? getIntField() {
     try {
-      final data = this;
-      dynamic value = data.getField(key);
-      if (value is String) {
-        return int.parse(value);
-      } else if (value is double) {
-        return value.toInt();
-      } else if (value is int) {
-        return value;
+      final data = this as dynamic;
+      if (data is String) {
+        return int.parse(data);
+      } else if (data is double) {
+        return data.toInt();
+      } else if (data is int) {
+        return data;
       }
       return null;
     } catch (e) {
@@ -84,16 +65,15 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  double? getDoubleField(String key) {
+  double? getDoubleField() {
     try {
-      final data = this;
-      dynamic value = data.getField(key);
-      if (value is String) {
-        return double.parse(value);
-      } else if (value is int) {
-        return value.toDouble();
-      } else if (value is double) {
-        return value;
+      final data = this as dynamic;
+      if (data is String) {
+        return double.parse(data);
+      } else if (data is int) {
+        return data.toDouble();
+      } else if (data is double) {
+        return data;
       }
       return null;
     } catch (e) {
@@ -103,15 +83,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  DateTime? getDatetime(
-    String key, {
+  DateTime? getDatetime({
     String format = 'yyyy-MM-dd HH:mm:sss',
     String locale = 'en_US',
   }) {
     try {
-      final data = this;
-      return key.dateFrom(
-        data,
+      return dateFrom(
         format: format,
         locale: locale,
       );
@@ -122,19 +99,17 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  R? getInstanceOf<R extends Object<R>>(
-    String key, {
+  R? getInstanceOf<R extends object.Object<R>>({
     R? recyclerInstance,
   }) {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return null;
-      if (!data.containsKey(key)) return null;
 
       final instance = recyclerInstance ?? ObjectManager().instance<R>(R, null);
       return instance.fromJson(
         ObjectManager().internalLinkerToMap(
-          data[key],
+          data,
         ),
       );
     } catch (e) {
@@ -144,14 +119,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  List<R> getListOfInstances<R extends Object<R>>(String key, [String? id]) {
+  List<R> getListOfInstances<R extends object.Object<R>>([String? id]) {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return [];
-      if (!data.containsKey(key)) return [];
-
       return ObjectManager().listObjectFromComplexType<R>(
-        data[key] ?? [],
+        data ?? [],
         id ?? '',
       );
     } catch (e) {
@@ -161,16 +134,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  List<String> getListOfString(
-    String key,
-  ) {
+  List<String> getListOfString() {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return [];
-      if (!data.containsKey(key)) return [];
-
       return ObjectManager().listObjectFromBasicType<String>(
-        data[key] ?? [],
+        data ?? [],
       );
     } catch (e) {
       printDebug('Error on getListOfString $runtimeType');
@@ -179,16 +148,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  List<num> getListOfNum(
-    String key,
-  ) {
+  List<num> getListOfNum() {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return [];
-      if (!data.containsKey(key)) return [];
-
       return ObjectManager().listObjectFromBasicType<num>(
-        data[key] ?? [],
+        data ?? [],
       );
     } catch (e) {
       printDebug('Error on getListOfNum $runtimeType');
@@ -197,16 +162,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  List<double> getListOfDouble(
-    String key,
-  ) {
+  List<double> getListOfDouble() {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return [];
-      if (!data.containsKey(key)) return [];
-
       return ObjectManager().listObjectFromBasicType<double>(
-        data[key] ?? [],
+        data ?? [],
       );
     } catch (e) {
       printDebug('Error on getListOfDouble $runtimeType');
@@ -215,16 +176,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  List<int> getListOfInt(
-    String key,
-  ) {
+  List<int> getListOfInt() {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return [];
-      if (!data.containsKey(key)) return [];
-
       return ObjectManager().listObjectFromBasicType<int>(
-        data[key] ?? [],
+        data ?? [],
       );
     } catch (e) {
       printDebug('Error on getListOfInt $runtimeType');
@@ -233,16 +190,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  List<bool> getListOfBool(
-    String key,
-  ) {
+  List<bool> getListOfBool() {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return [];
-      if (!data.containsKey(key)) return [];
-
       return ObjectManager().listObjectFromBasicType<bool>(
-        data[key] ?? [],
+        data ?? [],
       );
     } catch (e) {
       printDebug('Error on getListOfBool $runtimeType');
@@ -251,17 +204,14 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  Map<String, R> getMapOfInstances<R extends Object<R>>(
-    String key, [
+  Map<String, R> getMapOfInstances<R extends object.Object<R>>([
     String? id,
   ]) {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return {};
-      if (!data.containsKey(key)) return {};
-
       return ObjectManager().fromComplexMap<R>(
-        data[key] ?? {},
+        data ?? {},
         id ?? '',
       );
     } catch (e) {
@@ -271,14 +221,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  Map<String, String> getMapOfString(String key) {
+  Map<String, String> getMapOfString() {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return {};
-      if (!data.containsKey(key)) return {};
-
       return ObjectManager().fromBasicMap<String>(
-        data[key] ?? {},
+        data ?? {},
       );
     } catch (e) {
       printDebug('Error on getMapOfStrings $runtimeType');
@@ -287,14 +235,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  Map<String, num> getMapOfNum(String key) {
+  Map<String, num> getMapOfNum() {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return {};
-      if (!data.containsKey(key)) return {};
-
       return ObjectManager().fromBasicMap<num>(
-        data[key] ?? {},
+        data ?? {},
       );
     } catch (e) {
       printDebug('Error on getMapOfNum $runtimeType');
@@ -303,14 +249,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  Map<String, int> getMapOfInt(String key) {
+  Map<String, int> getMapOfInt() {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return {};
-      if (!data.containsKey(key)) return {};
-
       return ObjectManager().fromBasicMap<int>(
-        data[key] ?? {},
+        data ?? {},
       );
     } catch (e) {
       printDebug('Error on getMapOfInt $runtimeType');
@@ -319,14 +263,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  Map<String, double> getMapOfDouble(String key) {
+  Map<String, double> getMapOfDouble() {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return {};
-      if (!data.containsKey(key)) return {};
-
       return ObjectManager().fromBasicMap<double>(
-        data[key] ?? {},
+        data ?? {},
       );
     } catch (e) {
       printDebug('Error on getMapOfDouble $runtimeType');
@@ -335,14 +277,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  Map<String, bool> getMapOfBool(String key) {
+  Map<String, bool> getMapOfBool() {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return {};
-      if (!data.containsKey(key)) return {};
-
       return ObjectManager().fromBasicMap<bool>(
-        data[key] ?? {},
+        data ?? {},
       );
     } catch (e) {
       printDebug('Error on getMapOfBool $runtimeType');
@@ -351,14 +291,12 @@ extension DataExt on Map<String, dynamic>? {
     }
   }
 
-  Map<String, dynamic> getMapOfDynamic(String key) {
+  Map<String, dynamic> getMapOfDynamic() {
     try {
-      final data = this;
+      final data = this as dynamic;
       if (data == null) return {};
-      if (!data.containsKey(key)) return {};
-
       return ObjectManager().fromBasicMap<dynamic>(
-        data[key] ?? {},
+        data ?? {},
       );
     } catch (e) {
       printDebug('Error on getMapOfDynamic $runtimeType');
@@ -368,150 +306,41 @@ extension DataExt on Map<String, dynamic>? {
   }
 
   /// Required getters
-  String getRequiredStringField(
-    String key, {
-    String? defaultValue,
-  }) {
-    try {
-      final data = this;
-      String? value = data.getStringField(key);
-      return value ?? defaultValue ?? '';
-    } catch (e) {
-      printDebug('Error on getRequiredStringField $runtimeType');
-      printDebug(e);
-      return defaultValue ?? '';
-    }
-  }
+  String getRequiredStringField({
+    String defaultValue = '',
+  }) =>
+      getStringField() ?? defaultValue;
 
-  bool getRequiredBoolField(String key, {bool defaultValue = false}) {
-    try {
-      final data = this;
-      bool? value = data.getBooleanField(key);
-      return value ?? defaultValue;
-    } catch (e) {
-      printDebug('Error on getRequiredBooleanField $runtimeType');
-      printDebug(e);
-      return false;
-    }
-  }
+  bool getRequiredBoolField({bool defaultValue = false}) =>
+      getBooleanField() ?? defaultValue;
 
-  num getRequiredNumField(
-    String key, {
-    num? defaultValue,
-  }) {
-    try {
-      final data = this;
-      num? value = data.getNumField(key);
-      return value ?? defaultValue ?? 0;
-    } catch (e) {
-      printDebug('Error on getRequiredNumField $runtimeType');
-      printDebug(e);
-      return defaultValue ?? 0;
-    }
-  }
+  num getRequiredNumField({
+    num defaultValue = 0,
+  }) =>
+      getNumField() ?? defaultValue;
 
-  int getRequiredIntField(
-    String key, {
-    int? defaultValue,
-  }) {
-    try {
-      final data = this;
-      int? value = data.getIntField(key);
-      return value ?? defaultValue ?? 0;
-    } catch (e) {
-      printDebug('Error on getRequiredIntField $runtimeType');
-      printDebug(e);
-      return defaultValue ?? 0;
-    }
-  }
+  int getRequiredIntField({
+    int defaultValue = 0,
+  }) =>
+      getIntField() ?? defaultValue;
 
-  double getRequiredDoubleField(
-    String key, {
-    double? defaultValue,
-  }) {
-    try {
-      final data = this;
-      double? value = data.getDoubleField(key);
-      return value ?? defaultValue ?? 0.0;
-    } catch (e) {
-      printDebug('Error on getRequiredDoubleField $runtimeType');
-      printDebug(e);
-      return defaultValue ?? 0.0;
-    }
-  }
+  double getRequiredDoubleField({
+    double defaultValue = 0.0,
+  }) =>
+      getDoubleField() ?? defaultValue;
 
-  List<String> getRequiredStringList(String key) {
-    final data = this;
-    if (data == null) return [];
-    try {
-      return ObjectManager().listObjectFromBasicType<String>(
-        data[key] ?? [],
-      );
-    } catch (e) {
-      printDebug('Error on getRequiredStringList $runtimeType');
-      printDebug(e);
-      return [];
-    }
-  }
+  List<String> getRequiredStringList() => getListOfString();
 
-  List<double> getRequiredDoubleList(String key) {
-    final data = this;
-    if (data == null) return [];
-    try {
-      return ObjectManager().listObjectFromBasicType<double>(
-        data[key] ?? [],
-      );
-    } catch (e) {
-      printDebug('Error on getRequiredDoubleList $runtimeType');
-      printDebug(e);
-      return [];
-    }
-  }
+  List<double> getRequiredDoubleList() => getListOfDouble();
 
-  dynamic getRequiredDynamic(String key) {
-    final data = this;
-    if (data == null) return {};
-    try {
-      return data.getField(key) ?? {};
-    } catch (e) {
-      printDebug('Error on getRequiredDynamic $runtimeType');
-      printDebug(e);
-      return {};
-    }
-  }
+  Map<String, dynamic> getRequiredDynamicMap() => getMapOfDynamic();
 
-  Map<String, dynamic> getRequiredDynamicMap(String key) {
-    final data = this;
-    if (data == null) return {};
-    try {
-      return ObjectManager().internalLinkerToMap(data[key] ?? {});
-    } catch (e) {
-      printDebug('Error on getRequiredDynamicMap $runtimeType');
-      printDebug(e);
-      return {};
-    }
-  }
-
-  R getRequiredInstanceOf<R extends Object<R>>(
-    String key,
+  R getRequiredInstanceOf<R extends object.Object<R>>(
     R defaultValue, {
     R? recyclerInstance,
-  }) {
-    try {
-      final data = this;
-      if (data == null) return defaultValue;
-      if (!data.containsKey(key)) return defaultValue;
-
-      final instance = recyclerInstance ?? ObjectManager().instance<R>(R, null);
-      return instance.fromJson(
-        ObjectManager().internalLinkerToMap(
-          data[key],
-        ),
-      );
-    } catch (e) {
-      printDebug('Error on getRequiredInstanceOf $runtimeType');
-      printDebug(e);
-      return defaultValue;
-    }
-  }
+  }) =>
+      getInstanceOf(
+        recyclerInstance: recyclerInstance,
+      ) ??
+      defaultValue;
 }

@@ -26,31 +26,31 @@ abstract class Object<T> {
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getStringField(key);
+      data.getStringFieldBy(key);
 
   bool? getBooleanField(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getBooleanField(key);
+      data.getBooleanFieldBy(key);
 
   num? getNumField(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getNumField(key);
+      data.getNumFieldBy(key);
 
   int? getIntField(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getIntField(key);
+      data.getIntFieldBy(key);
 
   double? getDoubleField(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getDoubleField(key);
+      data.getDoubleFieldBy(key);
 
   DateTime? getDatetime(
     Map<String, dynamic>? data,
@@ -58,7 +58,7 @@ abstract class Object<T> {
     String format = 'yyyy-MM-dd HH:mm:sss',
     String locale = 'en_US',
   }) =>
-      data.getDatetime(
+      data.getDatetimeBy(
         key,
         format: format,
         locale: locale,
@@ -69,7 +69,7 @@ abstract class Object<T> {
     String key, {
     R? recyclerInstance,
   }) =>
-      data.getInstanceOf(
+      data.getInstanceBy(
         key,
         recyclerInstance: recyclerInstance,
       );
@@ -78,79 +78,79 @@ abstract class Object<T> {
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getListOfInstances(key);
+      data.getListOfInstancesBy(key);
 
   List<String> getListOfString(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getListOfString(key);
+      data.getListOfStringBy(key);
 
   List<num> getListOfNum(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getListOfNum(key);
+      data.getListOfNumBy(key);
 
   List<double> getListOfDouble(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getListOfDouble(key);
+      data.getListOfDoubleBy(key);
 
   List<int> getListOfInt(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getListOfInt(key);
+      data.getListOfIntBy(key);
 
   List<bool> getListOfBool(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getListOfBool(key);
+      data.getListOfBoolBy(key);
 
   Map<String, R> getMapOfInstances<R extends Object<R>>(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getMapOfInstances(key);
+      data.getMapOfInstancesBy(key);
 
   Map<String, String> getMapOfString(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getMapOfString(key);
+      data.getMapOfStringBy(key);
 
   Map<String, num> getMapOfNum(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getMapOfNum(key);
+      data.getMapOfNumBy(key);
 
   Map<String, int> getMapOfInt(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getMapOfInt(key);
+      data.getMapOfIntBy(key);
 
   Map<String, double> getMapOfDouble(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getMapOfDouble(key);
+      data.getMapOfDoubleBy(key);
 
   Map<String, bool> getMapOfBool(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getMapOfBool(key);
+      data.getMapOfBoolBy(key);
 
   Map<String, dynamic> getMapOfDynamic(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getMapOfDynamic(key);
+      data.getMapOfDynamicBy(key);
 
   /// Required getters
   String getRequiredStringField(
@@ -158,59 +158,59 @@ abstract class Object<T> {
     String key, {
     String? defaultValue,
   }) =>
-      data.getRequiredStringField(key);
+      data.getRequiredStringFieldBy(key);
 
   bool getRequiredBoolField(
     Map<String, dynamic>? data,
     String key, {
     bool defaultValue = false,
   }) =>
-      data.getRequiredBoolField(key);
+      data.getRequiredBoolFieldBy(key);
 
   num getRequiredNumField(
     Map<String, dynamic>? data,
     String key, {
     num? defaultValue,
   }) =>
-      data.getRequiredNumField(key);
+      data.getRequiredNumFieldBy(key);
 
   int getRequiredIntField(
     Map<String, dynamic>? data,
     String key, {
     int? defaultValue,
   }) =>
-      data.getRequiredIntField(key);
+      data.getRequiredIntFieldBy(key);
 
   double getRequiredDoubleField(
     Map<String, dynamic>? data,
     String key, {
     double? defaultValue,
   }) =>
-      data.getRequiredDoubleField(key);
+      data.getRequiredDoubleFieldBy(key);
 
   List<String> getRequiredStringList(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getRequiredStringList(key);
+      data.getRequiredStringListBy(key);
 
   List<double> getRequiredDoubleList(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getRequiredDoubleList(key);
+      data.getRequiredDoubleListBy(key);
 
   dynamic getRequiredDynamic(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getRequiredDynamic(key);
+      data.getRequiredDynamicBy(key);
 
   Map<String, dynamic> getRequiredDynamicMap(
     Map<String, dynamic>? data,
     String key,
   ) =>
-      data.getRequiredDynamicMap(key);
+      data.getRequiredDynamicMapBy(key);
 
   R getRequiredInstanceOf<R extends Object<R>>(
     Map<String, dynamic>? data,
@@ -218,7 +218,7 @@ abstract class Object<T> {
     R defaultValue, {
     R? recyclerInstance,
   }) =>
-      data.getRequiredInstanceOf(
+      data.getRequiredInstanceBy(
         key,
         defaultValue,
         recyclerInstance: recyclerInstance,
