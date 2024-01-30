@@ -1,18 +1,16 @@
+import 'package:example/model/generated/model.g.dart';
 import 'package:flutter/material.dart';
-import 'package:object/object.dart';
 
-import 'model/annotation_complex_sample.dart';
-import 'model/annotation_simple_sample.dart';
 import 'model/complex_sample.dart';
 import 'model/simple_sample.dart';
 
 void main() {
-  ObjectLib().prepareInstances([
-    AnnotationComplexSample(),
-    AnnotationSimpleSample(),
-    ComplexSample(),
-    SimpleSample(),
-  ]);
+  Model().instancesForLoad(
+    additional: [
+      ComplexSample(),
+      SimpleSample(),
+    ],
+  );
   runApp(const MyApp());
 }
 

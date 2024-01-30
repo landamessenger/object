@@ -20,11 +20,11 @@ Future<List<VariableInfo>> findVariables(String path) async {
 
     final vars = getVars(content);
 
-    for (VariableInfo variable in vars) {
+    /*
+     for (VariableInfo variable in vars) {
       // print('============================================');
-      print('- ${variable.name}');
+      // print('- ${variable.name}');
 
-      /*
       print('type: ${variable.type}');
       print('internalType: ${variable.internalType}');
       print('primitive: ${variable.primitive}');
@@ -35,8 +35,8 @@ Future<List<VariableInfo>> findVariables(String path) async {
       print('defaultValue: ${variable.defaultValue}');
       print('map: ${variable.map}');
       print('list: ${variable.list}');
-       */
     }
+       */
 
     return vars;
   } catch (e) {

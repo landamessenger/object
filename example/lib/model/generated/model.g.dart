@@ -13,6 +13,29 @@ import 'package:example/model/annotation_simple_sample.dart';
 import 'package:example/model/annotation_complex_sample.dart';
 import 'package:example/model/simple_sample.dart';
 
+class Model {
+  static Model? _instance;
+
+  Model._internal();
+
+  factory Model() {
+    _instance ??= Model._internal();
+    return _instance!;
+  }
+
+  final List<dynamic> _instances = [
+    AnnotationComplexSample(),
+    AnnotationSimpleSample(),
+  ];
+
+  void instancesForLoad({List<dynamic> additional = const []}) {
+    final i = <dynamic>[];
+    i.addAll(_instances);
+    i.addAll(additional);
+    ObjectLib().prepareInstances(i);
+  }
+}
+
 abstract class AnnotationSimpleSampleGen
     extends Object<AnnotationSimpleSample> {
   abstract String id;
@@ -41,6 +64,8 @@ abstract class AnnotationSimpleSampleGen
     stringContent = getRequiredStringField(json, 'stringContent');
     booleanContent = getRequiredBoolField(json, 'booleanContent');
 
+    onLoad();
+
     return this as AnnotationSimpleSample;
   }
 
@@ -49,6 +74,10 @@ abstract class AnnotationSimpleSampleGen
 
   @override
   String getId() => id;
+
+  void onLoad() {
+    // nothing to do here
+  }
 }
 
 abstract class AnnotationComplexSampleGen
@@ -120,6 +149,8 @@ abstract class AnnotationComplexSampleGen
     intMap = getMapOfInt(json, 'intMap');
     boolMap = getMapOfBool(json, 'boolMap');
     instancesMap = getMapOfInstances(json, 'instancesMap');
+
+    onLoad();
 
     return this as AnnotationComplexSample;
   }

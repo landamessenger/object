@@ -78,7 +78,7 @@ export 'package:object/object.dart';\n
 
       var className = await findClassName(file.path);
       if (className == null) continue;
-      print(className);
+      // print(className);
 
       var variables = await findVariables(file.path);
       if (variables.isEmpty) continue;
