@@ -8,9 +8,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:object/object.dart';
 
-import 'model/complex_sample.dart';
-import 'model/simple_sample.dart';
-
 void main() {
   group('Safety test', () {
     test(
