@@ -13,208 +13,37 @@ The `object` library provides utilities for serializing and deserializing Dart o
 - Customizable serialization behavior through annotations and configuration options.
 - Compatibility with popular Dart frameworks and tools, including Flutter.
 
-## Installation
-
-To use the Object library in your Flutter/Dart project, add it as a dependency in your `pubspec.yaml` file and configure it:
-
-```yaml
-dependencies:
-  object: ^1.0.0
-
-object:
-  baseProjectFolder: 'lib'
-  outputFolder: 'model/generated'
-  modelsFile: 'model.g.dart'
-  generationClassSuffix: 'Gen'
-```
-
-Then, run `flutter pub get` to install the library.
-
-## Usage
-
-### 1. Define Dart Classes
-
-Define Dart classes that you want to serialize or deserialize. Annotate these classes with the necessary annotations from the generated file from the `object` package to specify serialization behavior.
-
-> `sample.dart` in `model/` folder
+Working with instances never was easiest.
 
 ```dart
-import 'generated/model.g.dart';
-
-class Sample extends SampleGen {
-  @override
-  @Field(
-    name: 'id',
-    primary: true,
-  )
-  String id = '';
-
-  @override
-  @Field(name: 'numberContent')
-  num numberContent = 0;
-
-  @override
-  @Field(name: 'integerContent')
-  int integerContent = 0;
-
-  @override
-  @Field(name: 'doubleContent')
-  double doubleContent = 0.0;
-
-  @override
-  @Field(name: 'stringContent')
-  String stringContent = 'string_content';
-
-  @override
-  @Field(name: 'booleanContent')
-  bool booleanContent = true;
-
-  @override
-  @Field(
-    name: 'ref',
-    basic: true,
-    import: 'package:cloud_firestore/cloud_firestore.dart',
-  )
-  DocumentReference? ref;
-
-  @override
-  @Field(
-    name: 'role',
-    defaultValue: DefaultValue(
-      value: 'client',
-    ),
-  )
-  String role = '';
-
-  @override
-  @Field(name: 'creationDate')
-  DateTime? creationDate;
-
-  @override
-  @Field(
-    name: 'device',
-    recycle: true,
-  )
-  Device? device;
-
-  @override
-  @Field(
-    name: 'info',
-    recycle: true,
-    import: 'package:app_package/models/info.dart',
-  )
-  Info? info;
-
-  Sample();
-}
+SimpleSample? sample = {
+  'id': 'id',
+  'numberContent': 1,
+  'integerContent': 2,
+  'doubleContent': 3.0,
+  'stringContent': 'string',
+  'booleanContent': true,
+}.asNullableInstance();
 ```
 
-### 2. Generate Serialization Code
+### [Home](https://github.com/landamessenger/object/wiki)
 
-Run the object builder to generate serialization code for your annotated Dart classes.
+### [Installation](https://github.com/landamessenger/object/wiki/Installation)
 
-```bash
-dart run object:build
-```
+### [Classes](https://github.com/landamessenger/object/wiki/Classes)
 
-This command generates serialization code based on the annotations in your Dart files.
+[- Generate Serialization Code](https://github.com/landamessenger/object/wiki/Classes#generate-serialization-code)
 
-### 3. Configure the classes
+### [Field Annotation](https://github.com/landamessenger/object/wiki/Field-Annotation)
 
-Configure the classes you will use with the `object` library.
+### [Instances](https://github.com/landamessenger/object/wiki/Instances)
 
-```dart
-import 'package:flutter/material.dart';
-import 'package:object/object.dart';
+[- Create new instances](https://github.com/landamessenger/object/wiki/Instances#create-new-instances)
 
-import 'model/sample.dart';
+[- Create a list of instances](https://github.com/landamessenger/object/wiki/Instances#create-a-list-of-instances)
 
-void main() {
-  /// From your pubspec.yaml configuration:
-  /// 
-  /// modelsFile: 'model.g.dart'
-  /// 
-  /// generates the [Model] class:
-  Model().instancesForLoad();
-  runApp(const MyApp());
-}
-```
+[- Create a map of instances](https://github.com/landamessenger/object/wiki/Instances#create-a-map-of-instances)
 
-You can include other classes with no `@Field` annotation but that implement the `Object<T>` contract of the library.
+[- Other types of instances](https://github.com/landamessenger/object/wiki/Instances#other-types-of-instances)
 
-```dart
-Model().instancesForLoad(
-  additional: [
-    OtherClass(),
-  ],
-);
-```
-
-### 4. Serialize and Deserialize Objects
-
-Use the generated `toJson()` and `fromJson()` methods to serialize and deserialize objects to and from JSON format.
-
-```dart
-void main() {
-  // Deserialize JSON to Dart object
-  Map<String, dynamic> json = {
-    'id': '_id',
-    'numberContent': 30,
-    // any other data..
-  };
-  Sample sample = Sample().fromJson(json);
-  
-  // Serialize Dart object to JSON
-  Map<String, dynamic> serializedJson = sample.toJson();
-}
-```
-
-## Field
-
-The @Field annotation allows you to de/serialize Dart instances easily. It offers different parameters:
-
-```dart
-class Field {
-  /// Sets the current field as the primary key which will difference that
-  /// instance of others.
-  final bool primary;
-
-  /// Sets if the current field should have a basic de/serialization.
-  ///
-  /// toJson() -> 'field': instance['field']
-  ///
-  /// fromJson() -> instance['field'] = json['field']
-  ///
-  final bool basic;
-
-  /// Defines the current field for being recycle on the deserialization
-  /// process. Instead of create a new instance of the field, the library will
-  /// use the old one, for avoiding memory consumption.
-  ///
-  /// This field only applies on complex instances, not on primitive types.
-  final bool recycle;
-
-  /// Key for de/serialization
-  final String name;
-
-  /// Helps de/serializing instances whose classes are not managed by the
-  /// library.
-  final String import;
-
-  /// Default value for primitive types.
-  final DefaultValue? defaultValue;
-
-  const Field({
-    required this.name,
-    this.import = '',
-    this.defaultValue,
-    this.primary = false,
-    this.basic = false,
-    this.recycle = false,
-  });
-}
-```
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+[- Conversion safety](https://github.com/landamessenger/object/wiki/Instances#conversion-safety)

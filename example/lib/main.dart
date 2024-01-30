@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    SimpleSample? sample = {
+    SimpleSample? nullableSample = {
       'id': 'id',
       'numberContent': 1,
       'integerContent': 2,
@@ -88,6 +88,15 @@ class _MyHomePageState extends State<MyHomePage> {
       'stringContent': 'string',
       'booleanContent': true,
     }.asNullableInstance();
+
+    SimpleSample sample = {
+      'id': 'id',
+      'numberContent': 1,
+      'integerContent': 2,
+      'doubleContent': 3.0,
+      'stringContent': 'string',
+      'booleanContent': true,
+    }.asInstance(SimpleSample());
 
     final other = {
       'id': 'other',
@@ -97,6 +106,100 @@ class _MyHomePageState extends State<MyHomePage> {
       'stringContent': 'string',
       'booleanContent': true,
     }.asNullableInstance<SimpleSample>();
+
+    List<SimpleSample> samples = [
+      {
+        'id': 'id',
+        'numberContent': 1,
+        'integerContent': 2,
+        'doubleContent': 3.0,
+        'stringContent': 'string',
+        'booleanContent': true,
+      },
+      {
+        'id': 'other',
+        'numberContent': 1,
+        'integerContent': 2,
+        'doubleContent': 3.0,
+        'stringContent': 'string',
+        'booleanContent': true,
+      }
+    ].asInstanceList();
+
+    final otherList = [
+      {
+        'id': 'id',
+        'numberContent': 1,
+        'integerContent': 2,
+        'doubleContent': 3.0,
+        'stringContent': 'string',
+        'booleanContent': true,
+      },
+      {
+        'id': 'other',
+        'numberContent': 1,
+        'integerContent': 2,
+        'doubleContent': 3.0,
+        'stringContent': 'string',
+        'booleanContent': true,
+      }
+    ].asInstanceList<SimpleSample>();
+
+    Map<String, SimpleSample> sampleMap = {
+      'id': {
+        'id': 'id',
+        'numberContent': 1,
+        'integerContent': 2,
+        'doubleContent': 3.0,
+        'stringContent': 'string',
+        'booleanContent': true,
+      },
+      'other': {
+        'id': 'other',
+        'numberContent': 1,
+        'integerContent': 2,
+        'doubleContent': 3.0,
+        'stringContent': 'string',
+        'booleanContent': true,
+      }
+    }.asInstanceMap();
+
+    final otherMap = {
+      'id': {
+        'id': 'id',
+        'numberContent': 1,
+        'integerContent': 2,
+        'doubleContent': 3.0,
+        'stringContent': 'string',
+        'booleanContent': true,
+      },
+      'other': {
+        'id': 'other',
+        'numberContent': 1,
+        'integerContent': 2,
+        'doubleContent': 3.0,
+        'stringContent': 'string',
+        'booleanContent': true,
+      }
+    }.asInstanceMap<SimpleSample>();
+
+    final boolList = [
+      false,
+      false,
+      true,
+    ].asBoolList();
+
+    final doubleMap = [
+      0.0,
+      1.0,
+      3.0,
+    ].asDoubleList();
+
+    final doubleValue = 'string'.asDouble();
+    print(doubleValue); // prints 0.0
+
+    final boolValue = 77.asBool(defaultValue: true);
+    print(boolValue); // prints true
 
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
