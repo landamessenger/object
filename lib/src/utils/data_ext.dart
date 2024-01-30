@@ -1,11 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:object/src/manager/manager.dart';
 import 'package:object/src/model/base/object.dart' as object;
-import 'package:object/src/utils/date_ext.dart';
 import 'package:object/src/utils/print.dart';
+import 'package:object/src/utils/time_millis.dart';
 
 extension DataExt<T extends Object> on T? {
   /// Nullable getters
-  String? getStringField() {
+  String? asNullableString() {
     try {
       final data = this as dynamic;
       if (data is String) {
@@ -19,7 +21,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  bool? getBooleanField() {
+  bool? asNullableBool() {
     try {
       final data = this as dynamic;
       if (data is bool) {
@@ -33,7 +35,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  num? getNumField() {
+  num? asNullableNum() {
     try {
       final data = this as dynamic;
       if (data is num) {
@@ -47,7 +49,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  int? getIntField() {
+  int? asNullableInt() {
     try {
       final data = this as dynamic;
       if (data is String) {
@@ -65,7 +67,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  double? getDoubleField() {
+  double? asNullableDouble() {
     try {
       final data = this as dynamic;
       if (data is String) {
@@ -83,23 +85,45 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  DateTime? getDatetime({
+  DateTime? asDate({
     String format = 'yyyy-MM-dd HH:mm:sss',
     String locale = 'en_US',
   }) {
     try {
-      return dateFrom(
-        format: format,
-        locale: locale,
-      );
+      DateTime? date;
+      if (this == 'null') {
+        date = null;
+      } else if (this is String) {
+        if (isMillis(this as String, format)) {
+          date = Timestamp.fromMillisecondsSinceEpoch(
+            int.parse(
+              this as String,
+            ),
+          ).toDate();
+        } else {
+          var df = DateFormat(
+            format,
+            locale,
+          );
+          date = df.parse(this as String);
+        }
+      } else if (this != null && this is Timestamp) {
+        date = (this as Timestamp).toDate();
+      } else if (this != null && this is DateTime) {
+        date = this as DateTime;
+      } else if (this != null && (this as dynamic)['_seconds'] != null) {
+        date = Timestamp((this as dynamic)['_seconds'],
+                (this as dynamic)['_nanoseconds'])
+            .toDate();
+      }
+      return date;
     } catch (e) {
-      printDebug('Error on getDatetime $runtimeType');
-      printDebug(e);
+      printDebug('Error building date from $this: $e');
       return null;
     }
   }
 
-  R? getInstanceOf<R extends object.Object<R>>({
+  R? asNullableInstance<R extends object.Object<R>>({
     R? recyclerInstance,
   }) {
     try {
@@ -119,7 +143,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  List<R> getListOfInstances<R extends object.Object<R>>([String? id]) {
+  List<R> asInstanceList<R extends object.Object<R>>([String? id]) {
     try {
       final data = this as dynamic;
       if (data == null) return [];
@@ -134,7 +158,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  List<String> getListOfString() {
+  List<String> asStringList() {
     try {
       final data = this as dynamic;
       if (data == null) return [];
@@ -148,7 +172,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  List<num> getListOfNum() {
+  List<num> asNumList() {
     try {
       final data = this as dynamic;
       if (data == null) return [];
@@ -162,7 +186,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  List<double> getListOfDouble() {
+  List<double> asDoubleList() {
     try {
       final data = this as dynamic;
       if (data == null) return [];
@@ -176,7 +200,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  List<int> getListOfInt() {
+  List<int> asIntList() {
     try {
       final data = this as dynamic;
       if (data == null) return [];
@@ -190,7 +214,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  List<bool> getListOfBool() {
+  List<bool> asBoolList() {
     try {
       final data = this as dynamic;
       if (data == null) return [];
@@ -204,7 +228,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  Map<String, R> getMapOfInstances<R extends object.Object<R>>([
+  Map<String, R> asInstanceMap<R extends object.Object<R>>([
     String? id,
   ]) {
     try {
@@ -221,7 +245,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  Map<String, String> getMapOfString() {
+  Map<String, String> asStringMap() {
     try {
       final data = this as dynamic;
       if (data == null) return {};
@@ -235,7 +259,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  Map<String, num> getMapOfNum() {
+  Map<String, num> asNumMap() {
     try {
       final data = this as dynamic;
       if (data == null) return {};
@@ -249,7 +273,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  Map<String, int> getMapOfInt() {
+  Map<String, int> asIntMap() {
     try {
       final data = this as dynamic;
       if (data == null) return {};
@@ -263,7 +287,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  Map<String, double> getMapOfDouble() {
+  Map<String, double> asDoubleMap() {
     try {
       final data = this as dynamic;
       if (data == null) return {};
@@ -277,7 +301,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  Map<String, bool> getMapOfBool() {
+  Map<String, bool> asBoolMap() {
     try {
       final data = this as dynamic;
       if (data == null) return {};
@@ -291,7 +315,7 @@ extension DataExt<T extends Object> on T? {
     }
   }
 
-  Map<String, dynamic> getMapOfDynamic() {
+  Map<String, dynamic> asDynamicMap() {
     try {
       final data = this as dynamic;
       if (data == null) return {};
@@ -306,40 +330,34 @@ extension DataExt<T extends Object> on T? {
   }
 
   /// Required getters
-  String getRequiredStringField({
+  String asString({
     String defaultValue = '',
   }) =>
-      getStringField() ?? defaultValue;
+      asNullableString() ?? defaultValue;
 
-  bool getRequiredBoolField({bool defaultValue = false}) =>
-      getBooleanField() ?? defaultValue;
+  bool asBool({bool defaultValue = false}) =>
+      asNullableBool() ?? defaultValue;
 
-  num getRequiredNumField({
+  num asNum({
     num defaultValue = 0,
   }) =>
-      getNumField() ?? defaultValue;
+      asNullableNum() ?? defaultValue;
 
-  int getRequiredIntField({
+  int asInt({
     int defaultValue = 0,
   }) =>
-      getIntField() ?? defaultValue;
+      asNullableInt() ?? defaultValue;
 
-  double getRequiredDoubleField({
+  double asDouble({
     double defaultValue = 0.0,
   }) =>
-      getDoubleField() ?? defaultValue;
+      asNullableDouble() ?? defaultValue;
 
-  List<String> getRequiredStringList() => getListOfString();
-
-  List<double> getRequiredDoubleList() => getListOfDouble();
-
-  Map<String, dynamic> getRequiredDynamicMap() => getMapOfDynamic();
-
-  R getRequiredInstanceOf<R extends object.Object<R>>(
+  R asInstance<R extends object.Object<R>>(
     R defaultValue, {
     R? recyclerInstance,
   }) =>
-      getInstanceOf(
+      asNullableInstance(
         recyclerInstance: recyclerInstance,
       ) ??
       defaultValue;

@@ -204,12 +204,12 @@ void main() {
       const string = 'string_content_';
 
       var item = {
-        'id': id,
-        'numberContent': string,
+        'id': double,
+        'numberContent': id,
         'integerContent': string,
         'doubleContent': boolean,
-        'stringContent': boolean,
-        'booleanContent': string,
+        'stringContent': number,
+        'booleanContent': integer,
       };
 
       /// WHEN
@@ -257,7 +257,7 @@ void main() {
         'stringContent': '',
         'booleanContent': false,
         'sample': {
-          'id': id,
+          'id': '',
           'numberContent': 0,
           'integerContent': 0,
           'doubleContent': 0.0,
@@ -265,7 +265,7 @@ void main() {
           'booleanContent': false,
         },
         'simpleSample': {
-          'id': id,
+          'id': '',
           'numberContent': 0,
           'integerContent': 0,
           'doubleContent': 0.0,
@@ -279,7 +279,7 @@ void main() {
         'stringList': [],
         'instancesList': [
           {
-            'id': id,
+            'id': '',
             'numberContent': 0,
             'integerContent': 0,
             'doubleContent': 0.0,
@@ -294,7 +294,7 @@ void main() {
         'stringMap': {},
         'instancesMap': {
           'sample': {
-            'id': id,
+            'id': '',
             'numberContent': 0,
             'integerContent': 0,
             'doubleContent': 0.0,

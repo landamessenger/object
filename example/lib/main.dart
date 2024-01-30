@@ -80,6 +80,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    SimpleSample? sample = {
+      'id': 'id',
+      'numberContent': 1,
+      'integerContent': 2,
+      'doubleContent': 3.0,
+      'stringContent': 'string',
+      'booleanContent': true,
+    }.asNullableInstance();
+
+    final other = {
+      'id': 'other',
+      'numberContent': 1,
+      'integerContent': 2,
+      'doubleContent': 3.0,
+      'stringContent': 'string',
+      'booleanContent': true,
+    }.asNullableInstance<SimpleSample>();
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //

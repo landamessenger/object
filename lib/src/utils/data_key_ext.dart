@@ -21,23 +21,23 @@ extension DataKeyExt on Map<String, dynamic>? {
 
   /// Nullable getters
   String? getStringFieldBy(String key) {
-    return getField(key).getStringField();
+    return getField(key).asNullableString();
   }
 
-  bool? getBooleanFieldBy(String key) => getField(key).getBooleanField();
+  bool? getBooleanFieldBy(String key) => getField(key).asNullableBool();
 
-  num? getNumFieldBy(String key) => getField(key).getNumField();
+  num? getNumFieldBy(String key) => getField(key).asNullableNum();
 
-  int? getIntFieldBy(String key) => getField(key).getIntField();
+  int? getIntFieldBy(String key) => getField(key).asNullableInt();
 
-  double? getDoubleFieldBy(String key) => getField(key).getDoubleField();
+  double? getDoubleFieldBy(String key) => getField(key).asNullableDouble();
 
   DateTime? getDatetimeBy(
     String key, {
     String format = 'yyyy-MM-dd HH:mm:sss',
     String locale = 'en_US',
   }) =>
-      getField(key).getDatetime(
+      getField(key).asDate(
         format: format,
         locale: locale,
       );
@@ -46,7 +46,7 @@ extension DataKeyExt on Map<String, dynamic>? {
     String key, {
     R? recyclerInstance,
   }) =>
-      getField(key).getInstanceOf(
+      getField(key).asNullableInstance(
         recyclerInstance: recyclerInstance,
       );
 
@@ -54,60 +54,60 @@ extension DataKeyExt on Map<String, dynamic>? {
     String key, [
     String? id,
   ]) =>
-      getField(key).getListOfInstances(id);
+      getField(key).asInstanceList(id);
 
   List<String> getListOfStringBy(
     String key,
   ) =>
-      getField(key).getListOfString();
+      getField(key).asStringList();
 
   List<num> getListOfNumBy(
     String key,
   ) =>
-      getField(key).getListOfNum();
+      getField(key).asNumList();
 
   List<double> getListOfDoubleBy(
     String key,
   ) =>
-      getField(key).getListOfDouble();
+      getField(key).asDoubleList();
 
   List<int> getListOfIntBy(
     String key,
   ) =>
-      getField(key).getListOfInt();
+      getField(key).asIntList();
 
   List<bool> getListOfBoolBy(
     String key,
   ) =>
-      getField(key).getListOfBool();
+      getField(key).asBoolList();
 
   Map<String, R> getMapOfInstancesBy<R extends object.Object<R>>(
     String key, [
     String? id,
   ]) =>
-      getField(key).getMapOfInstances(id);
+      getField(key).asInstanceMap(id);
 
   Map<String, String> getMapOfStringBy(String key) =>
-      getField(key).getMapOfString();
+      getField(key).asStringMap();
 
-  Map<String, num> getMapOfNumBy(String key) => getField(key).getMapOfNum();
+  Map<String, num> getMapOfNumBy(String key) => getField(key).asNumMap();
 
-  Map<String, int> getMapOfIntBy(String key) => getField(key).getMapOfInt();
+  Map<String, int> getMapOfIntBy(String key) => getField(key).asIntMap();
 
   Map<String, double> getMapOfDoubleBy(String key) =>
-      getField(key).getMapOfDouble();
+      getField(key).asDoubleMap();
 
-  Map<String, bool> getMapOfBoolBy(String key) => getField(key).getMapOfBool();
+  Map<String, bool> getMapOfBoolBy(String key) => getField(key).asBoolMap();
 
   Map<String, dynamic> getMapOfDynamicBy(String key) =>
-      getField(key).getMapOfDynamic();
+      getField(key).asDynamicMap();
 
   /// Required getters
   String getRequiredStringFieldBy(
     String key, {
     String defaultValue = '',
   }) =>
-      getField(key).getRequiredStringField(
+      getField(key).asString(
         defaultValue: defaultValue,
       );
 
@@ -115,7 +115,7 @@ extension DataKeyExt on Map<String, dynamic>? {
     String key, {
     bool defaultValue = false,
   }) =>
-      getField(key).getRequiredBoolField(
+      getField(key).asBool(
         defaultValue: defaultValue,
       );
 
@@ -123,7 +123,7 @@ extension DataKeyExt on Map<String, dynamic>? {
     String key, {
     num defaultValue = 0,
   }) =>
-      getField(key).getRequiredNumField(
+      getField(key).asNum(
         defaultValue: defaultValue,
       );
 
@@ -131,7 +131,7 @@ extension DataKeyExt on Map<String, dynamic>? {
     String key, {
     int defaultValue = 0,
   }) =>
-      getField(key).getRequiredIntField(
+      getField(key).asInt(
         defaultValue: defaultValue,
       );
 
@@ -139,27 +139,27 @@ extension DataKeyExt on Map<String, dynamic>? {
     String key, {
     double defaultValue = 0.0,
   }) =>
-      getField(key).getRequiredDoubleField(
+      getField(key).asDouble(
         defaultValue: defaultValue,
       );
 
   List<String> getRequiredStringListBy(String key) =>
-      getField(key).getRequiredStringList();
+      getField(key).asStringList();
 
   List<double> getRequiredDoubleListBy(String key) =>
-      getField(key).getRequiredDoubleList();
+      getField(key).asDoubleList();
 
   dynamic getRequiredDynamicBy(String key) => getField(key) as dynamic;
 
   Map<String, dynamic> getRequiredDynamicMapBy(String key) =>
-      getField(key).getRequiredDynamicMap();
+      getField(key).asDynamicMap();
 
   R getRequiredInstanceBy<R extends object.Object<R>>(
     String key,
     R defaultValue, {
     R? recyclerInstance,
   }) =>
-      getField(key).getRequiredInstanceOf(
+      getField(key).asInstance(
         defaultValue,
         recyclerInstance: recyclerInstance,
       );
