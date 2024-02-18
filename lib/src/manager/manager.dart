@@ -45,7 +45,7 @@ class ObjectManager {
       var entry = map.entries.toList()[i];
       var data = ObjectManager().normalizeMap(entry.value);
       T instance =
-          ObjectManager().instance<T>(T, '${id}_${entry.key}_${data['id']}');
+          ObjectManager().instance<T>(T, '${id}_${i}_${entry.key}_${data['id']}');
       var k = entry.key as String;
       instance.fromJson(data);
       re[k] = instance;
