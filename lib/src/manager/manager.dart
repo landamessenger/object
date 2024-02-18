@@ -44,8 +44,10 @@ class ObjectManager {
     for (var i = 0; i < map.entries.length; i++) {
       var entry = map.entries.toList()[i];
       var data = ObjectManager().normalizeMap(entry.value);
-      T instance =
-          ObjectManager().instance<T>(T, '${id}_${i}_${entry.key}_${data['id']}');
+      T instance = ObjectManager().instance<T>(
+        T,
+        id.isEmpty ? null : '${id}_${i}_${entry.key}_${data['id']}',
+      );
       var k = entry.key as String;
       instance.fromJson(data);
       re[k] = instance;
@@ -71,7 +73,10 @@ class ObjectManager {
     for (var i = 0; i < list.length; i++) {
       dynamic val = list[i];
       var data = internalLinkerToMap(val);
-      T instance = ObjectManager().instance<T>(T, '${id}_${i}_${data['id']}');
+      T instance = ObjectManager().instance<T>(
+        T,
+        id.isEmpty ? null : '${id}_${i}_${data['id']}',
+      );
       instance.fromJson(data);
       re.add(instance);
     }
