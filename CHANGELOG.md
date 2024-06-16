@@ -1,3 +1,7 @@
+## 1.0.4
+
+* Dependencies updated.
+
 ## 1.0.3
 
 * Dependencies updated.
