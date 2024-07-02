@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Generated model class extends `ObjectModel`.
+
 ## 1.0.4
 
 * Dependencies updated.

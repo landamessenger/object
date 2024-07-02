@@ -105,7 +105,7 @@ import '${variables.additionalImport}';
     await file.writeAsString('''
 $imports
 
-class $modelsClassName {
+class $modelsClassName extends ObjectModel {
   static $modelsClassName? _instance;
 
   $modelsClassName._internal();
@@ -119,6 +119,7 @@ class $modelsClassName {
     ${instances.join('')}
   ];
 
+  @override
   void instancesForLoad({List<dynamic> additional = const []}) {
     final i = <dynamic>[];
     i.addAll(_instances);

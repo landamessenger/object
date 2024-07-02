@@ -13,7 +13,7 @@ import 'package:example/model/annotation_simple_sample.dart';
 import 'package:example/model/annotation_complex_sample.dart';
 import 'package:example/model/simple_sample.dart';
 
-class Model {
+class Model extends ObjectModel {
   static Model? _instance;
 
   Model._internal();
@@ -28,6 +28,7 @@ class Model {
     AnnotationSimpleSample(),
   ];
 
+  @override
   void instancesForLoad({List<dynamic> additional = const []}) {
     final i = <dynamic>[];
     i.addAll(_instances);
