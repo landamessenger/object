@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Fixed Windows imports.
+
 ## 1.1.0
 
 * Generated model class extends `ObjectModel`.

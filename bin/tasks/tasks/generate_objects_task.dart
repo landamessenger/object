@@ -72,7 +72,7 @@ export 'package:object/object.dart';\n
       final File file = File(fileSystemEntity.path);
 
       var p = file.path.split(baseProjectFolder)[1];
-      var classImport = 'package:$appId$p';
+      var classImport = 'package:$appId${p.replaceAll('\\', '/')}';
 
       print(classImport);
 
