@@ -1,6 +1,6 @@
 name: object
 description: "Simplify the process of converting Dart objects to JSON and vice versa, making it easier to work with JSON data in Dart applications."
-version: 1.2.1
+version: 1.2.2
 homepage: https://landamessenger.com
 repository: https://github.com/landamessenger/object
 
