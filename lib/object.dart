@@ -1,4 +1,4 @@
-library object;
+library;
 
 export 'src/model/base/default_value.dart';
 export 'src/model/base/field.dart';

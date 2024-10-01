@@ -1,3 +1,7 @@
+## 1.2.1
+
+* Generating constructors.
+
 ## 1.1.1
 
 * Fixed Windows imports.
