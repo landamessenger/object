@@ -65,7 +65,7 @@ abstract class AnnotationSimpleSampleGen
     stringContent = getRequiredStringField(json, 'stringContent');
     booleanContent = getRequiredBoolField(json, 'booleanContent');
 
-    onLoad();
+    onInstanceCreated();
 
     return this as AnnotationSimpleSample;
   }
@@ -73,10 +73,50 @@ abstract class AnnotationSimpleSampleGen
   @override
   AnnotationSimpleSample instance() => AnnotationSimpleSample();
 
+  AnnotationSimpleSample constructor({
+    required String id,
+    required num numberContent,
+    required int integerContent,
+    required double doubleContent,
+    required String stringContent,
+    required bool booleanContent,
+  }) {
+    this.id = id;
+    this.numberContent = numberContent;
+    this.integerContent = integerContent;
+    this.doubleContent = doubleContent;
+    this.stringContent = stringContent;
+    this.booleanContent = booleanContent;
+
+    onInstanceCreated();
+
+    return this as AnnotationSimpleSample;
+  }
+
+  AnnotationSimpleSample constructorWith({
+    String? id,
+    num? numberContent,
+    int? integerContent,
+    double? doubleContent,
+    String? stringContent,
+    bool? booleanContent,
+  }) {
+    this.id = id ?? this.id;
+    this.numberContent = numberContent ?? this.numberContent;
+    this.integerContent = integerContent ?? this.integerContent;
+    this.doubleContent = doubleContent ?? this.doubleContent;
+    this.stringContent = stringContent ?? this.stringContent;
+    this.booleanContent = booleanContent ?? this.booleanContent;
+
+    onInstanceCreated();
+
+    return this as AnnotationSimpleSample;
+  }
+
   @override
   String getId() => id;
 
-  void onLoad() {
+  void onInstanceCreated() {
     // nothing to do here
   }
 }
@@ -151,7 +191,7 @@ abstract class AnnotationComplexSampleGen
     boolMap = getMapOfBool(json, 'boolMap');
     instancesMap = getMapOfInstances(json, 'instancesMap');
 
-    onLoad();
+    onInstanceCreated();
 
     return this as AnnotationComplexSample;
   }
@@ -159,10 +199,106 @@ abstract class AnnotationComplexSampleGen
   @override
   AnnotationComplexSample instance() => AnnotationComplexSample();
 
+  AnnotationComplexSample constructor({
+    required String id,
+    required num numberContent,
+    required int integerContent,
+    required double doubleContent,
+    required String stringContent,
+    required bool booleanContent,
+    required AnnotationSimpleSample? sample,
+    required SimpleSample? simpleSample,
+    required List<String> stringList,
+    required List<num> numList,
+    required List<double> doubleList,
+    required List<int> intList,
+    required List<bool> boolList,
+    required List<AnnotationSimpleSample> instancesList,
+    required Map<String, String> stringMap,
+    required Map<String, num> numMap,
+    required Map<String, double> doubleMap,
+    required Map<String, int> intMap,
+    required Map<String, bool> boolMap,
+    required Map<String, AnnotationSimpleSample> instancesMap,
+  }) {
+    this.id = id;
+    this.numberContent = numberContent;
+    this.integerContent = integerContent;
+    this.doubleContent = doubleContent;
+    this.stringContent = stringContent;
+    this.booleanContent = booleanContent;
+    this.sample = sample;
+    this.simpleSample = simpleSample;
+    this.stringList = stringList;
+    this.numList = numList;
+    this.doubleList = doubleList;
+    this.intList = intList;
+    this.boolList = boolList;
+    this.instancesList = instancesList;
+    this.stringMap = stringMap;
+    this.numMap = numMap;
+    this.doubleMap = doubleMap;
+    this.intMap = intMap;
+    this.boolMap = boolMap;
+    this.instancesMap = instancesMap;
+
+    onInstanceCreated();
+
+    return this as AnnotationComplexSample;
+  }
+
+  AnnotationComplexSample constructorWith({
+    String? id,
+    num? numberContent,
+    int? integerContent,
+    double? doubleContent,
+    String? stringContent,
+    bool? booleanContent,
+    AnnotationSimpleSample? sample,
+    SimpleSample? simpleSample,
+    List<String>? stringList,
+    List<num>? numList,
+    List<double>? doubleList,
+    List<int>? intList,
+    List<bool>? boolList,
+    List<AnnotationSimpleSample>? instancesList,
+    Map<String, String>? stringMap,
+    Map<String, num>? numMap,
+    Map<String, double>? doubleMap,
+    Map<String, int>? intMap,
+    Map<String, bool>? boolMap,
+    Map<String, AnnotationSimpleSample>? instancesMap,
+  }) {
+    this.id = id ?? this.id;
+    this.numberContent = numberContent ?? this.numberContent;
+    this.integerContent = integerContent ?? this.integerContent;
+    this.doubleContent = doubleContent ?? this.doubleContent;
+    this.stringContent = stringContent ?? this.stringContent;
+    this.booleanContent = booleanContent ?? this.booleanContent;
+    this.sample = sample ?? this.sample;
+    this.simpleSample = simpleSample ?? this.simpleSample;
+    this.stringList = stringList ?? this.stringList;
+    this.numList = numList ?? this.numList;
+    this.doubleList = doubleList ?? this.doubleList;
+    this.intList = intList ?? this.intList;
+    this.boolList = boolList ?? this.boolList;
+    this.instancesList = instancesList ?? this.instancesList;
+    this.stringMap = stringMap ?? this.stringMap;
+    this.numMap = numMap ?? this.numMap;
+    this.doubleMap = doubleMap ?? this.doubleMap;
+    this.intMap = intMap ?? this.intMap;
+    this.boolMap = boolMap ?? this.boolMap;
+    this.instancesMap = instancesMap ?? this.instancesMap;
+
+    onInstanceCreated();
+
+    return this as AnnotationComplexSample;
+  }
+
   @override
   String getId() => id;
 
-  void onLoad() {
+  void onInstanceCreated() {
     // nothing to do here
   }
 }

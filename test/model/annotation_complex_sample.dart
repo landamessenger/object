@@ -28,7 +28,7 @@ class AnnotationComplexSample extends AnnotationComplexSampleGen {
 
   @override
   @Field(name: 'stringContent')
-  String stringContent = 'string_content';
+  String stringContent = '';
 
   @override
   @Field(

@@ -1,10 +1,17 @@
 import 'get_metadata.dart';
 
 String getObjectClassFor(
-    String clazz, String clazzSuffix, List<VariableInfo> variables) {
+  String clazz,
+  String clazzSuffix,
+  List<VariableInfo> variables,
+) {
   String variablesDeclaration = getVariablesDeclaration(variables);
   String variablesToJson = getVariablesToJson(variables);
   String variablesFromJson = getVariablesFromJson(variables);
+  String parametersConstructor = getParametersConstructor(variables);
+  String variablesConstructor = getVariablesConstructor(variables);
+  String parametersConstructorOptional = getParametersConstructorOptional(variables);
+  String variablesConstructorOptional = getVariablesConstructorOptional(variables);
   String? primaryGetter = getPrimaryDeclaration(variables);
 
   String content = '''
@@ -23,7 +30,7 @@ abstract class $clazz$clazzSuffix extends Object<$clazz> {
   $clazz fromJson(Map<String, dynamic> json) {
     $variablesFromJson
     
-    onLoad();
+    onInstanceCreated();
     
     return this as $clazz;
   }
@@ -31,9 +38,29 @@ abstract class $clazz$clazzSuffix extends Object<$clazz> {
   @override
   $clazz instance() => $clazz();
   
+  $clazz constructor({
+    $parametersConstructor
+  }) {
+    $variablesConstructor
+
+    onInstanceCreated();
+
+    return this as $clazz;
+  }
+  
+  $clazz constructorWith({
+    $parametersConstructorOptional
+  }) {
+    $variablesConstructorOptional
+
+    onInstanceCreated();
+
+    return this as $clazz;
+  }
+  
   $primaryGetter
   
-  void onLoad() {
+  void onInstanceCreated() {
     // nothing to do here
   }
 }
@@ -136,6 +163,46 @@ String getVariablesFromJson(List<VariableInfo> variables) {
           '${variableInfo.name} = getRequired${variableInfo.typeForImplement()}Field(json, \'${variableInfo.identifier}\'${variableInfo.defaultValue.isNotEmpty ? ', defaultValue: ${variableInfo.defaultValue}' : ''});\n';
       declarations += variable;
     }
+  }
+
+  return declarations;
+}
+
+String getParametersConstructor(List<VariableInfo> variables) {
+  String declarations = '\n';
+
+  for (VariableInfo variableInfo in variables) {
+    declarations += 'required ${variableInfo.type} ${variableInfo.name},\n';
+  }
+
+  return declarations;
+}
+
+String getVariablesConstructor(List<VariableInfo> variables) {
+  String declarations = '\n';
+
+  for (VariableInfo variableInfo in variables) {
+    declarations += 'this.${variableInfo.name} = ${variableInfo.name};\n';
+  }
+
+  return declarations;
+}
+
+String getParametersConstructorOptional(List<VariableInfo> variables) {
+  String declarations = '\n';
+
+  for (VariableInfo variableInfo in variables) {
+    declarations += '${variableInfo.type}${variableInfo.nullable ? '' : '?'} ${variableInfo.name},\n';
+  }
+
+  return declarations;
+}
+
+String getVariablesConstructorOptional(List<VariableInfo> variables) {
+  String declarations = '\n';
+
+  for (VariableInfo variableInfo in variables) {
+    declarations += 'this.${variableInfo.name} = ${variableInfo.name} ?? this.${variableInfo.name};\n';
   }
 
   return declarations;
