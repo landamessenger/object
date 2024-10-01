@@ -6,7 +6,7 @@ on:
       - '**'
 
 jobs:
-  pull_request_check:
+  push_check:
 
     runs-on: self-hosted
 
