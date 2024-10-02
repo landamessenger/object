@@ -3,7 +3,7 @@ name: Tag Version on Push to Master
 on:
   push:
     branches:
-      - develop
+      - master
 
 jobs:
   tag_version:
@@ -34,8 +34,8 @@ jobs:
             exit 1
           fi
 
-          # git tag "v${{ env.VERSION }}"
-          # git push origin "v${{ env.VERSION }}"
+          git tag "v${{ env.VERSION }}"
+          git push origin "v${{ env.VERSION }}"
 
       - name: Handle job completion
         if: always()
