@@ -16,7 +16,7 @@ jobs:
       - name: Read version from pubspec.yml
         id: read_version
         run: |
-          VERSION=$(grep '^version: ' pubspec.yml | cut -d ' ' -f 2)
+          VERSION=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Create tag
