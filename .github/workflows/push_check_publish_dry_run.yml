@@ -1,4 +1,4 @@
-name: Push Test Check
+name: Push Publish Dry Run Check
 
 on:
   push:
