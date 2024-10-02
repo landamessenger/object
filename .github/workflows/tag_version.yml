@@ -22,15 +22,52 @@ jobs:
       - name: Create tag
         id: create_tag
         run: |
-          landa-messenger-api chat-send \
-            --id "${{ secrets.CHAT_ID }}" \
-            --api_key "${{ secrets.CHAT_KEY }}" \
-            --title "🟢 Test version" \
-            --body "${{ github.repository }}: v${{ env.VERSION }}" \
-            --url "https://github.com/landamessenger/object/actions/workflows/tag_version.yml" \
-            --image "https://avatars.githubusercontent.com/u/63705403?s=200&v=4" \
-            --background_color "#55000000" \
-            --text_color "#FFFFFFFF"
+          # Checks if the tag already exists in the remote repository
+          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "Error: Tag v${{ env.VERSION }} already exists."
+            exit 1
+          fi
 
-      - name: Tag pushed confirmation
-        run: echo "Tag v${{ env.VERSION }} created and pushed!"
+          # Check if the version was found
+          if [ -z "${{ env.VERSION }}" ]; then
+            echo "Error: No version found in pubspec.yml"
+            exit 1
+          fi
+
+          # git tag "v${{ env.VERSION }}"
+          # git push origin "v${{ env.VERSION }}"
+
+      - name: Handle job completion
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "failure" ]; then
+            landa-messenger-api chat-send \
+              --id "${{ secrets.CHAT_ID }}" \
+              --api_key "${{ secrets.CHAT_KEY }}" \
+              --title "🔴 Creation Tag Failed" \
+              --body "${{ github.repository }}: ${{ github.event.head_commit.message }}" \
+              --url "https://github.com/landamessenger/object/actions/workflows/tag_version.yml" \
+              --image "https://avatars.githubusercontent.com/u/63705403?s=200&v=4" \
+              --background_color "#55000000" \
+              --text_color "#FFFFFFFF"
+          elif [ "${{ job.status }}" == "cancelled" ]; then
+            landa-messenger-api chat-send \
+              --id "${{ secrets.CHAT_ID }}" \
+              --api_key "${{ secrets.CHAT_KEY }}" \
+              --title "🟠 Creation Tag  Canceled" \
+              --body "${{ github.repository }}: ${{ github.event.head_commit.message }}" \
+              --url "https://github.com/landamessenger/object/actions/workflows/tag_version.yml" \
+              --image "https://avatars.githubusercontent.com/u/63705403?s=200&v=4" \
+              --background_color "#55000000" \
+              --text_color "#FFFFFFFF"
+          else
+            landa-messenger-api chat-send \
+              --id "${{ secrets.CHAT_ID }}" \
+              --api_key "${{ secrets.CHAT_KEY }}" \
+              --title "🟢 Creation Tag Passed" \
+              --body "${{ github.repository }}: ${{ github.event.head_commit.message }}" \
+              --url "https://github.com/landamessenger/object/actions/workflows/tag_version.yml" \
+              --image "https://avatars.githubusercontent.com/u/63705403?s=200&v=4" \
+              --background_color "#55000000" \
+              --text_color "#FFFFFFFF"
+          fi
