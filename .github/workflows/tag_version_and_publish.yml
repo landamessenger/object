@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  tag_version:
+  tag_version_and_publish:
 
     runs-on: self-hosted
 
